@@ -1,0 +1,231 @@
+.verification-pending-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.verification-container {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 600px;
+  padding: 3rem;
+}
+
+.verification-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.verification-header .brand-name {
+  font-size: 2.5rem;
+  color: var(--primary);
+  margin-bottom: 0;
+}
+
+.verification-content {
+  text-align: center;
+}
+
+.status-icon {
+  font-size: 5rem;
+  margin-bottom: 1.5rem;
+  display: inline-block;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.status-icon.pending {
+  color: var(--warning);
+}
+
+.status-icon.approved {
+  color: var(--success);
+}
+
+.status-icon.rejected {
+  color: var(--danger);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+.verification-content h2 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+.verification-message {
+  color: var(--gray-600);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+}
+
+.verification-details {
+  background: var(--gray-50);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  margin: 2rem 0;
+  text-align: left;
+}
+
+.verification-details h3 {
+  font-size: 1.125rem;
+  color: var(--gray-800);
+  margin-bottom: 1rem;
+}
+
+.verification-details ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.verification-details li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.verification-details li:last-child {
+  border-bottom: none;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status-badge.pending {
+  background: var(--warning-light);
+  color: var(--warning-dark);
+}
+
+.status-badge.approved {
+  background: var(--success-light);
+  color: var(--success-dark);
+}
+
+.status-badge.rejected {
+  background: var(--danger-light);
+  color: var(--danger-dark);
+}
+
+.rejection-details {
+  background: var(--danger-light);
+  border: 1px solid var(--danger);
+}
+
+.rejected-documents-list {
+  margin-bottom: 1.5rem;
+}
+
+.rejected-document-item {
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-left: 3px solid var(--danger);
+}
+
+.rejected-document-item:last-child {
+  margin-bottom: 0;
+}
+
+.rejection-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--danger-dark);
+}
+
+.rejection-icon {
+  font-size: 1.25rem;
+}
+
+.rejection-reason-box {
+  background: var(--gray-50);
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  color: var(--gray-700);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.rejection-reason {
+  background: var(--white);
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  color: var(--gray-800);
+  margin-bottom: 1rem;
+  border-left: 3px solid var(--danger);
+}
+
+.verification-actions {
+  margin: 2rem 0;
+}
+
+.verification-actions .btn {
+  min-width: 150px;
+}
+
+.verification-support {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--gray-200);
+}
+
+.verification-support p {
+  color: var(--gray-600);
+  font-size: 0.875rem;
+}
+
+.verification-support a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.verification-support a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .verification-pending-page {
+    padding: 1rem;
+  }
+
+  .verification-container {
+    padding: 2rem 1.5rem;
+  }
+
+  .status-icon {
+    font-size: 4rem;
+  }
+
+  .verification-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .verification-message {
+    font-size: 0.9375rem;
+  }
+}

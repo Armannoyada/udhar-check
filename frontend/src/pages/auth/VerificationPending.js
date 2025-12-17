@@ -56,7 +56,7 @@ const VerificationPending = () => {
     <div className="verification-pending-page">
       <div className="verification-container">
         <div className="verification-header">
-          <h1 className="brand-name">उधार</h1>
+          <h1 className="brand-name">उधार CHECK</h1>
         </div>
 
         <div className="verification-content">

@@ -596,7 +596,7 @@ const Onboarding = () => {
     <div className="onboarding-page">
       <div className="onboarding-container">
         <div className="onboarding-header">
-          <h1 className="brand-name">उधार</h1>
+          <h1 className="brand-name">उधार CHECK</h1>
           <p>{isResubmission ? 'Update Your Rejected Documents' : 'Complete your profile to get started'}</p>
         </div>
 

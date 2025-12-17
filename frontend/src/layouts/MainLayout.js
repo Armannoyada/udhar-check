@@ -80,7 +80,10 @@ const MainLayout = () => {
         <button className="menu-btn" onClick={() => setSidebarOpen(true)}>
           <FiMenu size={24} />
         </button>
-        <h1 className="mobile-brand">उधार</h1>
+        <div className="mobile-brand-section">
+          <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="Logo" className="mobile-logo" />
+          <h1 className="mobile-brand">उधार CHECK</h1>
+        </div>
         <NavLink to={`${basePath}/notifications`} className="notification-btn">
           <FiBell size={20} />
           {unreadCount > 0 && <span className="notification-badge">{unreadCount}</span>}
@@ -90,7 +93,10 @@ const MainLayout = () => {
       {/* Sidebar */}
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
-          <h1 className="sidebar-brand">उधार</h1>
+          <div className="sidebar-logo-section">
+            <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="Logo" className="sidebar-logo" />
+            <h1 className="sidebar-brand">उधार CHECK</h1>
+          </div>
           <button className="sidebar-close" onClick={() => setSidebarOpen(false)}>
             <FiX size={24} />
           </button>

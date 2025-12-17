@@ -7,7 +7,8 @@ const AuthLayout = () => {
     <div className="auth-layout">
       <div className="auth-container">
         <div className="auth-brand">
-          <h1 className="brand-name">उधार</h1>
+          <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="Udhar Check Logo" className="brand-logo" />
+          <h1 className="brand-name">उधार CHECK</h1>
           <p className="brand-tagline">Trusted Peer-to-Peer Lending</p>
         </div>
         <div className="auth-content">

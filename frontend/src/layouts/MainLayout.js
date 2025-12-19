@@ -82,7 +82,7 @@ const MainLayout = () => {
         </button>
         <div className="mobile-brand-section">
           <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="Logo" className="mobile-logo" />
-          <h1 className="mobile-brand">उधार CHECK</h1>
+          <h1 className="mobile-brand">उधार  CHECK</h1>
         </div>
         <NavLink to={`${basePath}/notifications`} className="notification-btn">
           <FiBell size={20} />

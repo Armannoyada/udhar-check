@@ -25,10 +25,13 @@ const Notifications = () => {
   const fetchNotifications = async () => {
     try {
       const response = await notificationsAPI.getAll();
-      setNotifications(response.data.data || []);
+      const data = response.data.data;
+      // Ensure notifications is always an array
+      setNotifications(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Failed to fetch notifications:', error);
       toast.error('Failed to load notifications');
+      setNotifications([]);
     } finally {
       setLoading(false);
     }

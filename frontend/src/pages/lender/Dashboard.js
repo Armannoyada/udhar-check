@@ -148,7 +148,7 @@ const LenderDashboard = () => {
             </div>
             <div className="score-item">
               <div className="score-circle" style={{ background: 'rgba(245, 158, 11, 0.1)', color: 'var(--warning)' }}>
-                {user?.averageRating?.toFixed(1) || '0.0'}
+                {user?.averageRating ? Number(user.averageRating).toFixed(1) : '0.0'}
               </div>
               <div className="score-info">
                 <h4>Average Rating</h4>

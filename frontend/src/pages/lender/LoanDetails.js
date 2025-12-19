@@ -290,7 +290,7 @@ const LoanDetails = () => {
                 )}
                 <div className="score-item" style={{ background: 'rgba(245, 158, 11, 0.1)' }}>
                   <span className="score-value" style={{ color: 'var(--warning)' }}>
-                    ⭐ {otherUser.averageRating?.toFixed(1) || '0.0'}
+                    ⭐ {otherUser.averageRating ? Number(otherUser.averageRating).toFixed(1) : '0.0'}
                   </span>
                   <span className="score-label">{otherUser.totalRatings || 0} Ratings</span>
                 </div>

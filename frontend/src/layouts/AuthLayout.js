@@ -8,8 +8,10 @@ const AuthLayout = () => {
       <div className="auth-container">
         <div className="auth-brand">
           <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="Udhar Check Logo" className="brand-logo" />
-          <h1 className="brand-name">उधार CHECK</h1>
-          <p className="brand-tagline">Trusted Peer-to-Peer Lending</p>
+          <div>
+            <h1 className="brand-name">उधार<span style={{ marginLeft: '0.1em' }}>CHECK</span></h1>
+            <p className="brand-tagline">Trusted Peer-to-Peer Lending</p>
+          </div>
         </div>
         <div className="auth-content">
           <Outlet />

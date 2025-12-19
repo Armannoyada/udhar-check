@@ -322,19 +322,29 @@ const BorrowerDashboard = () => {
       {/* Request Money Modal */}
       {showRequestModal && (
         <div className="modal-overlay" onClick={() => setShowRequestModal(false)}>
-          <div className="modal modal-lg" onClick={(e) => e.stopPropagation()}>
+          <div className="modal request-money-modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h3 className="modal-title">Request Money</h3>
+              <div className="modal-header-content">
+                <div className="modal-icon">
+                  <FiDollarSign size={24} />
+                </div>
+                <div>
+                  <h3 className="modal-title">Request Money</h3>
+                  <p className="modal-subtitle">Fill in the details to submit your loan request</p>
+                </div>
+              </div>
               <button className="modal-close" onClick={() => setShowRequestModal(false)}>&times;</button>
             </div>
             <form onSubmit={handleSubmitRequest}>
               <div className="modal-body">
-                <div className="form-row">
-                  <div className="form-group">
-                    <label className="form-label">Amount (₹) *</label>
+                {/* Amount Input */}
+                <div className="form-group amount-group">
+                  <label className="form-label">How much do you need?</label>
+                  <div className="amount-input-wrapper">
+                    <span className="currency-symbol">₹</span>
                     <input
                       type="number"
-                      className="form-input"
+                      className="form-input amount-input"
                       placeholder="Enter amount"
                       value={requestForm.amount}
                       onChange={(e) => setRequestForm({ ...requestForm, amount: e.target.value })}
@@ -342,58 +352,95 @@ const BorrowerDashboard = () => {
                       required
                     />
                   </div>
-                  <div className="form-group">
-                    <label className="form-label">Duration (Days) *</label>
-                    <select
-                      className="form-input form-select"
-                      value={requestForm.duration}
-                      onChange={(e) => setRequestForm({ ...requestForm, duration: e.target.value })}
-                    >
-                      <option value="7">7 Days</option>
-                      <option value="14">14 Days</option>
-                      <option value="30">30 Days</option>
-                      <option value="60">60 Days</option>
-                      <option value="90">90 Days</option>
-                    </select>
+                  <div className="quick-amounts">
+                    {[1000, 5000, 10000, 25000].map((amt) => (
+                      <button
+                        key={amt}
+                        type="button"
+                        className={`quick-amount-btn ${requestForm.amount === String(amt) ? 'active' : ''}`}
+                        onClick={() => setRequestForm({ ...requestForm, amount: String(amt) })}
+                      >
+                        ₹{amt.toLocaleString()}
+                      </button>
+                    ))}
                   </div>
                 </div>
 
+                {/* Duration Selection */}
                 <div className="form-group">
-                  <label className="form-label">Purpose *</label>
-                  <select
-                    className="form-input form-select"
-                    value={requestForm.purpose}
-                    onChange={(e) => setRequestForm({ ...requestForm, purpose: e.target.value })}
-                    required
-                  >
-                    <option value="">Select Purpose</option>
-                    <option value="Medical Emergency">Medical Emergency</option>
-                    <option value="Education">Education</option>
-                    <option value="Business">Business</option>
-                    <option value="Personal">Personal</option>
-                    <option value="Home Improvement">Home Improvement</option>
-                    <option value="Travel">Travel</option>
-                    <option value="Debt Consolidation">Debt Consolidation</option>
-                    <option value="Other">Other</option>
-                  </select>
+                  <label className="form-label">Repayment Duration</label>
+                  <div className="duration-options">
+                    {[
+                      { value: '7', label: '7 Days' },
+                      { value: '14', label: '14 Days' },
+                      { value: '30', label: '30 Days' },
+                      { value: '60', label: '60 Days' },
+                      { value: '90', label: '90 Days' }
+                    ].map((option) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        className={`duration-btn ${requestForm.duration === option.value ? 'active' : ''}`}
+                        onClick={() => setRequestForm({ ...requestForm, duration: option.value })}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
+                {/* Purpose Selection */}
                 <div className="form-group">
-                  <label className="form-label">Additional Details</label>
+                  <label className="form-label">Purpose of Loan</label>
+                  <div className="purpose-grid">
+                    {[
+                      { value: 'Medical Emergency', icon: '🏥', label: 'Medical' },
+                      { value: 'Education', icon: '📚', label: 'Education' },
+                      { value: 'Business', icon: '💼', label: 'Business' },
+                      { value: 'Personal', icon: '👤', label: 'Personal' },
+                      { value: 'Home Improvement', icon: '🏠', label: 'Home' },
+                      { value: 'Other', icon: '📋', label: 'Other' }
+                    ].map((purpose) => (
+                      <button
+                        key={purpose.value}
+                        type="button"
+                        className={`purpose-btn ${requestForm.purpose === purpose.value ? 'active' : ''}`}
+                        onClick={() => setRequestForm({ ...requestForm, purpose: purpose.value })}
+                      >
+                        <span className="purpose-icon">{purpose.icon}</span>
+                        <span className="purpose-label">{purpose.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Additional Details */}
+                <div className="form-group">
+                  <label className="form-label">Additional Details <span className="optional">(Optional)</span></label>
                   <textarea
                     className="form-input form-textarea"
-                    placeholder="Provide any additional details that might help lenders understand your request..."
+                    placeholder="Tell lenders more about why you need this loan..."
                     value={requestForm.description}
                     onChange={(e) => setRequestForm({ ...requestForm, description: e.target.value })}
-                    rows={4}
+                    rows={3}
                   />
                 </div>
 
+                {/* Info Box */}
                 <div className="info-box">
-                  <h4>Before You Submit</h4>
+                  <div className="info-box-header">
+                    <FiAlertCircle />
+                    <h4>Before You Submit</h4>
+                  </div>
                   <ul>
-                    <li>Your trust score ({user?.trustScore || 50}) and repayment score ({user?.repaymentScore || 50}) will be visible to lenders</li>
-                    <li>Complete your profile verification to increase your chances of approval</li>
+                    <li>
+                      <span className="info-label">Your Scores:</span>
+                      <span className="score-badges">
+                        <span className={`mini-badge ${getScoreClass(user?.trustScore)}`}>Trust: {user?.trustScore || 50}</span>
+                        <span className={`mini-badge ${getScoreClass(user?.repaymentScore)}`}>Repay: {user?.repaymentScore || 50}</span>
+                      </span>
+                    </li>
+                    <li>Complete profile verification for better approval chances</li>
                     <li>Interest rates are set by individual lenders</li>
                   </ul>
                 </div>
@@ -402,8 +449,8 @@ const BorrowerDashboard = () => {
                 <button type="button" className="btn btn-secondary" onClick={() => setShowRequestModal(false)}>
                   Cancel
                 </button>
-                <button type="submit" className="btn btn-primary" disabled={submitting}>
-                  {submitting ? <span className="spinner"></span> : 'Submit Request'}
+                <button type="submit" className="btn btn-primary btn-submit" disabled={submitting || !requestForm.amount || !requestForm.purpose}>
+                  {submitting ? <span className="spinner"></span> : <>Submit Request <FiArrowRight /></>}
                 </button>
               </div>
             </form>

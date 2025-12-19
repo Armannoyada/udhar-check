@@ -73,9 +73,11 @@ const Login = () => {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary btn-lg" style={{ width: '100%' }} disabled={loading}>
-          {loading ? <span className="spinner"></span> : 'Sign In'}
-        </button>
+        <div style={{ marginTop: '1.5rem' }}>
+          <button type="submit" className="btn btn-primary btn-lg" style={{ width: '100%' }} disabled={loading}>
+            {loading ? <span className="spinner"></span> : 'Sign In'}
+          </button>
+        </div>
       </form>
 
       <p className="auth-footer">

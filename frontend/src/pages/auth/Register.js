@@ -174,9 +174,11 @@ const Register = () => {
           {errors.confirmPassword && <span className="form-error">{errors.confirmPassword}</span>}
         </div>
 
-        <button type="submit" className="btn btn-primary btn-lg" style={{ width: '100%' }} disabled={loading}>
-          {loading ? <span className="spinner"></span> : 'Create Account'}
-        </button>
+        <div style={{ marginTop: '1.5rem' }}>
+          <button type="submit" className="btn btn-primary btn-lg" style={{ width: '100%' }} disabled={loading}>
+            {loading ? <span className="spinner"></span> : 'Create Account'}
+          </button>
+        </div>
       </form>
 
       <p className="auth-footer">

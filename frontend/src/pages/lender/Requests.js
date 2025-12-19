@@ -169,7 +169,7 @@ const LenderRequests = () => {
                     </div>
                     <div className="meta-item">
                       <span className="meta-label">Rating</span>
-                      <span className="meta-value">⭐ {request.borrower?.averageRating?.toFixed(1) || '0.0'}</span>
+                      <span className="meta-value">⭐ {request.borrower?.averageRating ? Number(request.borrower.averageRating).toFixed(1) : '0.0'}</span>
                     </div>
                   </div>
 

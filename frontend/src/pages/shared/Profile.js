@@ -31,17 +31,10 @@ const Profile = () => {
     lastName: '',
     email: '',
     phone: '',
-    whatsapp: '',
     address: '',
     city: '',
     state: '',
-    pincode: '',
-    occupation: '',
-    monthlyIncome: '',
-    upiId: '',
-    bankAccountNumber: '',
-    ifscCode: '',
-    bankName: ''
+    pincode: ''
   });
 
   useEffect(() => {
@@ -51,17 +44,10 @@ const Profile = () => {
         lastName: user.lastName || '',
         email: user.email || '',
         phone: user.phone || '',
-        whatsapp: user.whatsapp || '',
         address: user.address || '',
         city: user.city || '',
         state: user.state || '',
-        pincode: user.pincode || '',
-        occupation: user.occupation || '',
-        monthlyIncome: user.monthlyIncome || '',
-        upiId: user.upiId || '',
-        bankAccountNumber: user.bankAccountNumber || '',
-        ifscCode: user.ifscCode || '',
-        bankName: user.bankName || ''
+        pincode: user.pincode || ''
       });
     }
   }, [user]);
@@ -188,8 +174,8 @@ const Profile = () => {
             <div className="score-item rating">
               <FiStar className="score-icon" />
               <div className="score-content">
-                <span className="score-value">{user?.averageRating ? Number(user.averageRating).toFixed(1) : '0.0'}</span>
-                <span className="score-label">{user?.totalRatings || 0} Ratings</span>
+                <span className="score-value">{user?.averageRating ? Math.round(Number(user.averageRating)) : 0}</span>
+                <span className="score-label">Ratings</span>
               </div>
             </div>
           </div>
@@ -275,39 +261,6 @@ const Profile = () => {
                       disabled={!editMode}
                     />
                   </div>
-                  <div className="form-group">
-                    <label className="form-label">WhatsApp</label>
-                    <input
-                      type="tel"
-                      name="whatsapp"
-                      className="form-input"
-                      value={formData.whatsapp}
-                      onChange={handleInputChange}
-                      disabled={!editMode}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Occupation</label>
-                    <input
-                      type="text"
-                      name="occupation"
-                      className="form-input"
-                      value={formData.occupation}
-                      onChange={handleInputChange}
-                      disabled={!editMode}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Monthly Income</label>
-                    <input
-                      type="number"
-                      name="monthlyIncome"
-                      className="form-input"
-                      value={formData.monthlyIncome}
-                      onChange={handleInputChange}
-                      disabled={!editMode}
-                    />
-                  </div>
                 </div>
               </div>
             </div>
@@ -359,62 +312,6 @@ const Profile = () => {
                       name="pincode"
                       className="form-input"
                       value={formData.pincode}
-                      onChange={handleInputChange}
-                      disabled={!editMode}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Payment Information */}
-            <div className="card">
-              <div className="card-header">
-                <h3><FiCreditCard /> Payment Details</h3>
-              </div>
-              <div className="card-body">
-                <div className="form-grid">
-                  <div className="form-group">
-                    <label className="form-label">UPI ID</label>
-                    <input
-                      type="text"
-                      name="upiId"
-                      className="form-input"
-                      placeholder="yourname@upi"
-                      value={formData.upiId}
-                      onChange={handleInputChange}
-                      disabled={!editMode}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Bank Name</label>
-                    <input
-                      type="text"
-                      name="bankName"
-                      className="form-input"
-                      value={formData.bankName}
-                      onChange={handleInputChange}
-                      disabled={!editMode}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Account Number</label>
-                    <input
-                      type="text"
-                      name="bankAccountNumber"
-                      className="form-input"
-                      value={formData.bankAccountNumber}
-                      onChange={handleInputChange}
-                      disabled={!editMode}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">IFSC Code</label>
-                    <input
-                      type="text"
-                      name="ifscCode"
-                      className="form-input"
-                      value={formData.ifscCode}
                       onChange={handleInputChange}
                       disabled={!editMode}
                     />

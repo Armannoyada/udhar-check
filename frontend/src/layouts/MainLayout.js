@@ -22,6 +22,11 @@ const MainLayout = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Refresh unread count when navigating
+  useEffect(() => {
+    fetchUnreadCount();
+  }, [location.pathname]);
+
   const fetchUnreadCount = async () => {
     try {
       const response = await notificationsAPI.getUnreadCount();
@@ -81,7 +86,7 @@ const MainLayout = () => {
           <FiMenu size={24} />
         </button>
         <div className="mobile-brand-section">
-          <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="Logo" className="mobile-logo" />
+          <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Logo" className="mobile-logo" />
           <h1 className="mobile-brand">उधार  CHECK</h1>
         </div>
         <NavLink to={`${basePath}/notifications`} className="notification-btn">
@@ -94,7 +99,7 @@ const MainLayout = () => {
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
           <div className="sidebar-logo-section">
-            <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="Logo" className="sidebar-logo" />
+            <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Logo" className="sidebar-logo" />
             <h1 className="sidebar-brand">उधार CHECK</h1>
           </div>
           <button className="sidebar-close" onClick={() => setSidebarOpen(false)}>

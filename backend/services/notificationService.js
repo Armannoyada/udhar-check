@@ -162,11 +162,27 @@ const notificationTemplates = {
   })
 };
 
+/**
+ * Delete notification
+ */
+const deleteNotification = async (notificationId, userId) => {
+  try {
+    const result = await Notification.destroy({
+      where: { id: notificationId, userId }
+    });
+    return result > 0;
+  } catch (error) {
+    console.error('Error deleting notification:', error);
+    return false;
+  }
+};
+
 module.exports = {
   createNotification,
   getUserNotifications,
   markAsRead,
   markAllAsRead,
   getUnreadCount,
+  deleteNotification,
   notificationTemplates
 };

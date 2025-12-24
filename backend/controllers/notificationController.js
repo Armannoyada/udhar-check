@@ -2,7 +2,8 @@ const {
   getUserNotifications, 
   markAsRead, 
   markAllAsRead, 
-  getUnreadCount 
+  getUnreadCount,
+  deleteNotification 
 } = require('../services/notificationService');
 
 // Get notifications
@@ -16,9 +17,10 @@ exports.getNotifications = async (req, res) => {
       unreadOnly: unreadOnly === 'true'
     });
 
+    // Return notifications array directly for compatibility
     res.json({
       success: true,
-      data: result
+      data: result.notifications || []
     });
   } catch (error) {
     console.error('Get notifications error:', error);
@@ -91,6 +93,34 @@ exports.getUnreadCount = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Failed to get unread count',
+      error: error.message
+    });
+  }
+};
+
+// Delete notification
+exports.deleteNotification = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const deleted = await deleteNotification(id, req.user.id);
+    
+    if (!deleted) {
+      return res.status(404).json({
+        success: false,
+        message: 'Notification not found'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Notification deleted'
+    });
+  } catch (error) {
+    console.error('Delete notification error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to delete notification',
       error: error.message
     });
   }

@@ -37,6 +37,22 @@ exports.createLoanRequest = async (req, res) => {
       entityId: loanRequest.id
     });
 
+    // Get borrower details for notification
+    const borrower = await User.findByPk(borrowerId);
+    
+    // Notify all admins
+    const admins = await User.findAll({ where: { role: 'admin' } });
+    for (const admin of admins) {
+      await createNotification({
+        userId: admin.id,
+        type: 'loan_request',
+        title: 'New Loan Request',
+        message: `${borrower.firstName} ${borrower.lastName} requested ₹${amount} for ${purpose}`,
+        relatedId: loanRequest.id,
+        relatedType: 'LoanRequest'
+      });
+    }
+
     res.status(201).json({
       success: true,
       message: 'Loan request created successfully',
@@ -230,6 +246,19 @@ exports.acceptLoanRequest = async (req, res) => {
       entityId: loanRequest.id
     });
 
+    // Notify all admins
+    const admins = await User.findAll({ where: { role: 'admin' } });
+    for (const admin of admins) {
+      await createNotification({
+        userId: admin.id,
+        type: 'loan_accepted',
+        title: 'Loan Request Accepted',
+        message: `${lender.firstName} ${lender.lastName} accepted loan of ₹${loanRequest.amount} for ${loanRequest.borrower.firstName} ${loanRequest.borrower.lastName}`,
+        relatedId: loanRequest.id,
+        relatedType: 'LoanRequest'
+      });
+    }
+
     res.json({
       success: true,
       message: 'Loan request accepted successfully',
@@ -293,6 +322,19 @@ exports.markFulfilled = async (req, res) => {
       relatedId: loanRequest.id,
       relatedType: 'LoanRequest'
     });
+
+    // Notify all admins
+    const admins = await User.findAll({ where: { role: 'admin' } });
+    for (const admin of admins) {
+      await createNotification({
+        userId: admin.id,
+        type: 'loan_fulfilled',
+        title: 'Loan Fulfilled',
+        message: `${borrower.firstName} ${borrower.lastName} confirmed receiving ₹${loanRequest.amount} from ${lender.firstName} ${lender.lastName}`,
+        relatedId: loanRequest.id,
+        relatedType: 'LoanRequest'
+      });
+    }
 
     res.json({
       success: true,

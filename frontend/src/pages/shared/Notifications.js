@@ -19,8 +19,25 @@ const Notifications = () => {
   const [filter, setFilter] = useState('all');
 
   useEffect(() => {
-    fetchNotifications();
+    const loadAndMarkRead = async () => {
+      await fetchNotifications();
+    };
+    loadAndMarkRead();
   }, []);
+
+  // Mark all as read after notifications are loaded
+  useEffect(() => {
+    if (notifications.length > 0 && !loading) {
+      const unread = notifications.filter(n => !n.isRead);
+      if (unread.length > 0) {
+        // Auto-mark all as read after a short delay
+        const timer = setTimeout(() => {
+          handleMarkAllAsRead();
+        }, 500);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [notifications, loading]);
 
   const fetchNotifications = async () => {
     try {

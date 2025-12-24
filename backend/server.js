@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
 
 const { sequelize } = require('./models/associations');
 
@@ -25,6 +27,12 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'Udhar API Documentation'
+}));
 
 // API Routes
 app.use('/api/auth', authRoutes);
@@ -99,6 +107,7 @@ const startServer = async () => {
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
       console.log(`📍 API: http://localhost:${PORT}/api`);
+      console.log(`📚 API Docs: http://localhost:${PORT}/api-docs`);
     });
   } catch (error) {
     console.error('❌ Unable to start server:', error);

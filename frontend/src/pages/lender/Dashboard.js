@@ -133,31 +133,8 @@ const LenderDashboard = () => {
         </div>
       </div>
 
-      {/* Score Display */}
-      <div className="card score-card">
-        <div className="card-body">
-          <div className="score-display">
-            <div className="score-item">
-              <div className={`score-circle ${getScoreClass(user?.trustScore)}`}>
-                {user?.trustScore || 50}
-              </div>
-              <div className="score-info">
-                <h4>Trust Score</h4>
-                <p>Based on your activity and ratings</p>
-              </div>
-            </div>
-            <div className="score-item">
-              <div className="score-circle" style={{ background: 'rgba(245, 158, 11, 0.1)', color: 'var(--warning)' }}>
-                {user?.averageRating ? Number(user.averageRating).toFixed(1) : '0.0'}
-              </div>
-              <div className="score-info">
-                <h4>Average Rating</h4>
-                <p>{user?.totalRatings || 0} ratings received</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      
+      
 
       <div className="dashboard-grid">
         {/* Pending Requests */}
@@ -239,7 +216,33 @@ const LenderDashboard = () => {
           </div>
         </div>
       </div>
+      {/* Score Display */}
+      <div className="card score-card">
+        <div className="card-body">
+          <div className="score-display">
+            <div className="score-item">
+              <div className={`score-circle ${getScoreClass(user?.trustScore)}`}>
+                {user?.trustScore || 50}
+              </div>
+              <div className="score-info">
+                <h4>Trust Score</h4>
+                <p>Based on your activity and ratings</p>
+              </div>
+            </div>
+            <div className="score-item">
+              <div className="score-circle" style={{ background: 'rgba(245, 158, 11, 0.1)', color: 'var(--warning)' }}>
+                {user?.averageRating ? Number(user.averageRating).toFixed(1) : '0.0'}
+              </div>
+              <div className="score-info">
+                <h4>Average Rating</h4>
+                <p>{user?.totalRatings || 0} ratings received</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    
   );
 };
 

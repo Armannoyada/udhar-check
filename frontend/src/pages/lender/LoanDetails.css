@@ -52,6 +52,23 @@
   .loan-info-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .user-scores {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+
+  .score-item {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .score-item .score-value {
+    font-size: 1.5rem;
+  }
+
+  .score-item .score-label {
+    font-size: 0.65rem;
+  }
 }
 
 .info-item {
@@ -145,10 +162,15 @@
 }
 
 .score-item {
-  padding: 1rem 0.5rem;
+  padding: 1rem 0.75rem;
   border-radius: 8px;
   text-align: center;
   transition: transform 0.2s;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .score-item:hover {
@@ -169,8 +191,10 @@
 
 .score-item .score-value {
   display: block;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.25rem;
 }
 
 .score-item.score-high .score-value {
@@ -187,9 +211,17 @@
 
 .score-item .score-label {
   display: block;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   color: var(--text-light);
   margin-top: 0.25rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  line-height: 1.2;
 }
 
 /* Verification Badges */
@@ -284,12 +316,15 @@
 
 .modal {
   background: var(--white);
-  border-radius: 12px;
-  width: 100%;
-  max-width: 480px;
+  border-radius: 16px;
+  width: 95%;
+  max-width: 600px;
   max-height: 90vh;
-  overflow-y: auto;
-  animation: modalSlide 0.2s ease-out;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalSlide 0.25s ease-out;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
 }
 
 @keyframes modalSlide {
@@ -307,38 +342,179 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1.5rem;
+  padding: 1.5rem 2rem;
   border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .modal-title {
-  font-size: 1.125rem;
+  font-size: 1.5rem;
   margin: 0;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .modal-close {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 2rem;
   color: var(--text-light);
   cursor: pointer;
   line-height: 1;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.2s;
 }
 
 .modal-close:hover {
   color: var(--text-primary);
+  background: var(--gray-light);
 }
 
 .modal-body {
-  padding: 1.5rem;
+  padding: 2.5rem 2rem;
+  overflow-y: auto;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-300) transparent;
+}
+
+.modal-body::-webkit-scrollbar {
+  width: 10px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: var(--gray-100);
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background-color: var(--gray-300);
+  border-radius: 10px;
+  border: 2px solid var(--gray-100);
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background-color: var(--gray-400);
 }
 
 .modal-footer {
   display: flex;
-  gap: 1rem;
+  gap: 1.25rem;
   justify-content: flex-end;
-  padding: 1rem 1.5rem;
+  padding: 1.5rem 2rem;
   border-top: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--gray-50);
+}
+
+.modal-footer .btn {
+  padding: 0.875rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Modal Form Improvements */
+.modal-body .form-group {
+  margin-bottom: 2rem;
+}
+
+.modal-body .form-group:last-child {
+  margin-bottom: 0;
+}
+
+.modal-body .form-label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.modal-body .form-input,
+.modal-body .form-select,
+.modal-body .form-textarea {
+  padding: 0.75rem 1rem;
+  font-size: 0.9375rem;
+}
+
+.modal-body .form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Large Modal */
+.modal.modal-lg {
+  max-width: 550px;
+  width: 95%;
+}
+
+/* Scrollable Modal Body */
+.modal-body-scrollable {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 1.5rem 2rem;
+}
+
+/* Form Sections - Vertical Layout */
+.form-section {
+  padding: 1.5rem;
+  background: var(--gray-50);
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--gray-200);
+}
+
+.form-section:last-child {
+  margin-bottom: 0;
+}
+
+.form-group-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.form-label-lg {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0;
+}
+
+.form-input-lg {
+  padding: 1rem 1.25rem !important;
+  font-size: 1rem !important;
+  border-radius: 10px !important;
+  background: white;
+}
+
+.form-input-lg:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+.form-hint {
+  font-size: 0.8125rem;
+  color: var(--text-light);
+  margin-top: -0.25rem;
+}
+
+/* Large Buttons */
+.btn-lg {
+  padding: 1rem 2rem !important;
+  font-size: 1rem !important;
+  font-weight: 600;
+  border-radius: 10px;
 }
 
 /* Rating Stars */
@@ -375,6 +551,356 @@
   color: var(--text-light);
   font-size: 0.875rem;
   margin-bottom: 1.5rem;
+}
+
+/* ========================================
+   REPAYMENT MODAL - Modern Fintech Design
+   ======================================== */
+
+.repayment-modal {
+  background: #ffffff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 85vh;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: repaymentModalSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  margin: 1rem;
+  position: relative;
+}
+
+@keyframes repaymentModalSlide {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Header - Fixed at top */
+.repayment-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.5rem 1.75rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  flex-shrink: 0;
+  background: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.repayment-modal-title h3 {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.25rem 0;
+  letter-spacing: -0.02em;
+}
+
+.repayment-modal-title p {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.repayment-modal-close {
+  background: #f8fafc;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #64748b;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.repayment-modal-close:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+/* Body - Scrollable with proper constraints */
+.repayment-modal-body {
+  padding: 1.5rem 1.75rem 2rem;
+  overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: calc(85vh - 180px); /* Account for header and footer */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.repayment-modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.repayment-modal-body::-webkit-scrollbar-track {
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+.repayment-modal-body::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.repayment-modal-body::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Form Fields */
+.repayment-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.repayment-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.repayment-label-required {
+  color: #ef4444;
+  font-weight: 500;
+}
+
+.repayment-label-optional {
+  font-weight: 400;
+  color: #9ca3af;
+  font-size: 0.8125rem;
+}
+
+/* Input with Prefix */
+.repayment-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.repayment-input-prefix {
+  position: absolute;
+  left: 1rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #64748b;
+  pointer-events: none;
+}
+
+.repayment-input-wrapper .repayment-input {
+  padding-left: 2.5rem;
+}
+
+/* Inputs */
+.repayment-input,
+.repayment-select,
+.repayment-textarea {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  font-family: inherit;
+  color: #1e293b;
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.repayment-input:hover,
+.repayment-select:hover,
+.repayment-textarea:hover {
+  border-color: #cbd5e1;
+}
+
+.repayment-input:focus,
+.repayment-select:focus,
+.repayment-textarea:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.repayment-input::placeholder,
+.repayment-textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* Select Dropdown */
+.repayment-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 3rem;
+  cursor: pointer;
+}
+
+/* Textarea */
+.repayment-textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.5;
+}
+
+/* Hint Text */
+.repayment-hint {
+  font-size: 0.8125rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+/* Footer - Fixed at bottom */
+.repayment-modal-footer {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1.25rem 1.75rem 1.5rem;
+  border-top: 1px solid #f1f5f9;
+  background: linear-gradient(to top, #ffffff 0%, #fafbfc 100%);
+  flex-shrink: 0;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Buttons */
+.repayment-btn {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.repayment-btn-cancel {
+  background: #ffffff;
+  color: #475569;
+  border: 2px solid #e2e8f0;
+}
+
+.repayment-btn-cancel:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.repayment-btn-confirm {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+}
+
+.repayment-btn-confirm:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+.repayment-btn-confirm:active {
+  transform: translateY(0);
+}
+
+.repayment-btn-confirm:disabled {
+  background: #9ca3af;
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Spinner */
+.repayment-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: repaymentSpin 0.8s linear infinite;
+}
+
+@keyframes repaymentSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 520px) {
+  .repayment-modal {
+    max-width: 100%;
+    max-height: 92vh;
+    border-radius: 20px 20px 0 0;
+    margin: 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .repayment-modal-header {
+    padding: 1.25rem 1.25rem 1rem;
+  }
+
+  .repayment-modal-title h3 {
+    font-size: 1.25rem;
+  }
+
+  .repayment-modal-body {
+    padding: 1.25rem 1.25rem 1.5rem;
+    gap: 1.25rem;
+    max-height: calc(92vh - 170px);
+  }
+
+  .repayment-modal-footer {
+    padding: 1rem 1.25rem 1.5rem;
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  }
+
+  .repayment-btn {
+    padding: 0.875rem 1rem;
+    font-size: 0.9375rem;
+  }
+
+  .repayment-input,
+  .repayment-select,
+  .repayment-textarea {
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+  }
+}
+
+/* Prevent background scroll when modal is open */
+body.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
 }
 
 /* Table Styles */

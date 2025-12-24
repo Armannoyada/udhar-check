@@ -26,6 +26,18 @@ const LoanDetails = () => {
     review: ''
   });
 
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (showRepaymentModal || showRatingModal) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+    return () => {
+      document.body.classList.remove('modal-open');
+    };
+  }, [showRepaymentModal, showRatingModal]);
+
   useEffect(() => {
     fetchLoanDetails();
   }, [id]);
@@ -391,30 +403,46 @@ const LoanDetails = () => {
       {/* Repayment Modal */}
       {showRepaymentModal && (
         <div className="modal-overlay" onClick={() => setShowRepaymentModal(false)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3 className="modal-title">Record Repayment</h3>
-              <button className="modal-close" onClick={() => setShowRepaymentModal(false)}>&times;</button>
+          <div className="repayment-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="repayment-modal-header">
+              <div className="repayment-modal-title">
+                <h3>Record Repayment</h3>
+                <p>Enter the payment details below</p>
+              </div>
+              <button className="repayment-modal-close" onClick={() => setShowRepaymentModal(false)}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
             </div>
+            
             <form onSubmit={handleRecordRepayment}>
-              <div className="modal-body">
-                <div className="form-group">
-                  <label className="form-label">Amount (₹)</label>
-                  <input
-                    type="number"
-                    className="form-input"
-                    placeholder="Enter amount"
-                    value={repaymentData.amount}
-                    onChange={(e) => setRepaymentData({ ...repaymentData, amount: e.target.value })}
-                    max={loan.remainingAmount}
-                    required
-                  />
+              <div className="repayment-modal-body">
+                <div className="repayment-form-field">
+                  <label className="repayment-label">
+                    Amount
+                    <span className="repayment-label-required">*</span>
+                  </label>
+                  <div className="repayment-input-wrapper">
+                    <span className="repayment-input-prefix">₹</span>
+                    <input
+                      type="number"
+                      className="repayment-input"
+                      placeholder="0.00"
+                      value={repaymentData.amount}
+                      onChange={(e) => setRepaymentData({ ...repaymentData, amount: e.target.value })}
+                      max={loan.remainingAmount}
+                      required
+                    />
+                  </div>
+                  <span className="repayment-hint">Maximum amount: ₹{Number(loan.remainingAmount).toLocaleString('en-IN')}</span>
                 </div>
 
-                <div className="form-group">
-                  <label className="form-label">Payment Method</label>
+                <div className="repayment-form-field">
+                  <label className="repayment-label">Payment Method</label>
                   <select
-                    className="form-input form-select"
+                    className="repayment-select"
                     value={repaymentData.paymentMethod}
                     onChange={(e) => setRepaymentData({ ...repaymentData, paymentMethod: e.target.value })}
                   >
@@ -426,34 +454,50 @@ const LoanDetails = () => {
                   </select>
                 </div>
 
-                <div className="form-group">
-                  <label className="form-label">Transaction Reference (Optional)</label>
+                <div className="repayment-form-field">
+                  <label className="repayment-label">
+                    Transaction Reference
+                    <span className="repayment-label-optional">(Optional)</span>
+                  </label>
                   <input
                     type="text"
-                    className="form-input"
-                    placeholder="e.g., UPI Ref Number"
+                    className="repayment-input"
+                    placeholder="e.g., UPI Ref Number, Transaction ID"
                     value={repaymentData.transactionReference}
                     onChange={(e) => setRepaymentData({ ...repaymentData, transactionReference: e.target.value })}
                   />
                 </div>
 
-                <div className="form-group">
-                  <label className="form-label">Remarks (Optional)</label>
+                <div className="repayment-form-field">
+                  <label className="repayment-label">
+                    Remarks
+                    <span className="repayment-label-optional">(Optional)</span>
+                  </label>
                   <textarea
-                    className="form-input form-textarea"
-                    placeholder="Any additional notes"
+                    className="repayment-textarea"
+                    placeholder="Add any notes about this payment..."
                     value={repaymentData.remarks}
                     onChange={(e) => setRepaymentData({ ...repaymentData, remarks: e.target.value })}
-                    rows={2}
+                    rows={3}
                   />
                 </div>
               </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={() => setShowRepaymentModal(false)}>
+
+              <div className="repayment-modal-footer">
+                <button type="button" className="repayment-btn repayment-btn-cancel" onClick={() => setShowRepaymentModal(false)}>
                   Cancel
                 </button>
-                <button type="submit" className="btn btn-success" disabled={actionLoading}>
-                  {actionLoading ? <span className="spinner"></span> : 'Confirm Repayment'}
+                <button type="submit" className="repayment-btn repayment-btn-confirm" disabled={actionLoading}>
+                  {actionLoading ? (
+                    <span className="repayment-spinner"></span>
+                  ) : (
+                    <>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      Confirm Payment
+                    </>
+                  )}
                 </button>
               </div>
             </form>

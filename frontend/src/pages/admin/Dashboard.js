@@ -66,17 +66,29 @@ const AdminDashboard = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const [statsRes, usersRes, loansRes, reportsRes, disputesRes] = await Promise.all([
+      const [statsRes, usersRes, loansRes] = await Promise.all([
         adminAPI.getDashboardStats(),
         adminAPI.getUsers({ limit: 5 }),
-        adminAPI.getLoans({ limit: 5 }),
-        adminAPI.getReports({ status: 'pending', limit: 5 }),
-        adminAPI.getDisputes({ status: 'open', limit: 5 })
+        adminAPI.getLoans({ limit: 5 })
       ]);
 
-      setStats(statsRes.data.data || {});
+      // Handle stats - could be nested in 'stats' or directly in 'data'
+      const statsData = statsRes.data.data?.stats || statsRes.data.data || {};
+      setStats({
+        totalUsers: statsData.totalUsers || 0,
+        totalLenders: statsData.totalLenders || 0,
+        totalBorrowers: statsData.totalBorrowers || 0,
+        activeLoans: statsData.activeLoans || 0,
+        completedLoans: statsData.completedLoans || 0,
+        defaultedLoans: statsData.defaultedLoans || 0,
+        totalLentAmount: statsData.totalLentAmount || 0,
+        pendingReports: statsData.pendingReports || 0,
+        openDisputes: statsData.openDisputes || 0,
+        totalLoans: (statsData.activeLoans || 0) + (statsData.completedLoans || 0) + (statsData.defaultedLoans || 0)
+      });
+      
       setRecentUsers(usersRes.data.data?.users || []);
-      setRecentLoans(loansRes.data.data?.loans || []);
+      setRecentLoans(statsRes.data.data?.recentLoans || loansRes.data.data?.loans || []);
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error);
       toast.error('Failed to load dashboard data');

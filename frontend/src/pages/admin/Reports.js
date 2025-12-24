@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { reportsAPI, disputesAPI } from '../../services/api';
+import { adminAPI, reportsAPI, disputesAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import { 
   FiAlertTriangle, 
@@ -35,8 +35,8 @@ const Reports = () => {
     try {
       setLoading(true);
       const params = statusFilter !== 'all' ? { status: statusFilter } : {};
-      const response = await reportsAPI.getAll(params);
-      setReports(response.data.data || []);
+      const response = await adminAPI.getReports(params);
+      setReports(response.data.data?.reports || response.data.data || []);
     } catch (error) {
       console.error('Failed to fetch reports:', error);
       toast.error('Failed to load reports');
@@ -49,8 +49,8 @@ const Reports = () => {
     try {
       setLoading(true);
       const params = statusFilter !== 'all' ? { status: statusFilter } : {};
-      const response = await disputesAPI.getAll(params);
-      setDisputes(response.data.data || []);
+      const response = await adminAPI.getDisputes(params);
+      setDisputes(response.data.data?.disputes || response.data.data || []);
     } catch (error) {
       console.error('Failed to fetch disputes:', error);
       toast.error('Failed to load disputes');
@@ -64,6 +64,7 @@ const Reports = () => {
       pending: { class: 'badge-warning', label: 'Pending' },
       open: { class: 'badge-warning', label: 'Open' },
       investigating: { class: 'badge-info', label: 'Investigating' },
+      under_review: { class: 'badge-info', label: 'Under Review' },
       resolved: { class: 'badge-success', label: 'Resolved' },
       dismissed: { class: 'badge-gray', label: 'Dismissed' },
       closed: { class: 'badge-gray', label: 'Closed' }
@@ -77,13 +78,13 @@ const Reports = () => {
     setActionLoading(true);
     try {
       if (activeTab === 'reports') {
-        await reportsAPI.resolve(selectedItem.id, { 
+        await adminAPI.resolveReport(selectedItem.id, { 
           status: action,
           adminNote: actionNote 
         });
       } else {
-        await disputesAPI.resolve(selectedItem.id, { 
-          resolution: action,
+        await adminAPI.resolveDispute(selectedItem.id, { 
+          status: action,
           adminNote: actionNote 
         });
       }

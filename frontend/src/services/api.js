@@ -73,7 +73,9 @@ export const reportsAPI = {
   create: (formData) => api.post('/reports', formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
   }),
-  getMyReports: (params) => api.get('/reports/my-reports', { params })
+  getMyReports: (params) => api.get('/reports/my-reports', { params }),
+  getAll: (params) => api.get('/admin/reports', { params }),
+  resolve: (id, data) => api.put(`/admin/reports/${id}`, data)
 };
 
 // Disputes API
@@ -84,7 +86,9 @@ export const disputesAPI = {
   getMyDisputes: (params) => api.get('/disputes/my-disputes', { params }),
   addNote: (id, formData) => api.post(`/disputes/${id}/note`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
-  })
+  }),
+  getAll: (params) => api.get('/admin/disputes', { params }),
+  resolve: (id, data) => api.put(`/admin/disputes/${id}`, data)
 };
 
 // Notifications API
@@ -112,6 +116,13 @@ export const adminAPI = {
   getLoans: (params) => api.get('/admin/loans', { params }),
   getSettings: () => api.get('/admin/settings'),
   updateSetting: (data) => api.put('/admin/settings', data),
+  updateSettings: (settings) => {
+    // Update each setting individually
+    const promises = Object.entries(settings).map(([key, value]) => 
+      api.put('/admin/settings', { key, value: String(value) })
+    );
+    return Promise.all(promises);
+  },
   getActivityLogs: (params) => api.get('/admin/activity-logs', { params })
 };
 

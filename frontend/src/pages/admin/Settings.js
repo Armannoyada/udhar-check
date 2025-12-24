@@ -18,33 +18,25 @@ const Settings = () => {
   const [saving, setSaving] = useState(false);
   const [settings, setSettings] = useState({
     // Loan Settings
-    minLoanAmount: 1000,
-    maxLoanAmount: 500000,
-    minLoanDuration: 7,
-    maxLoanDuration: 365,
-    defaultInterestRate: 10,
-    maxInterestRate: 36,
+    min_transaction_amount: 500,
+    max_transaction_amount: 100000,
+    min_loan_duration_days: 7,
+    max_loan_duration_days: 365,
+    default_interest_rate: 10,
     
     // Score Settings
-    defaultTrustScore: 50,
-    minTrustScoreForLending: 30,
-    repaymentScoreImpact: 5,
-    latePaymentPenalty: 10,
+    trust_score_default: 50,
+    repayment_score_default: 50,
+    auto_block_report_threshold: 5,
     
     // Verification Settings
-    requireIdVerification: true,
-    requireFaceVerification: true,
-    autoApproveVerifiedUsers: false,
+    require_id_verification: true,
+    require_face_verification: true,
     
     // Notification Settings
-    enableEmailNotifications: true,
-    enableSmsNotifications: false,
-    reminderDaysBeforeDue: 3,
-    
-    // Platform Settings
-    platformFeePercent: 1,
-    maintenanceMode: false,
-    allowNewRegistrations: true
+    enable_email_notifications: true,
+    enable_sms_notifications: true,
+    enable_whatsapp_notifications: true
   });
 
   useEffect(() => {
@@ -55,7 +47,26 @@ const Settings = () => {
     try {
       const response = await adminAPI.getSettings();
       if (response.data.data) {
-        setSettings(prev => ({ ...prev, ...response.data.data }));
+        // Handle grouped settings format from backend
+        const groupedSettings = response.data.data;
+        const flatSettings = {};
+        
+        // Flatten the grouped settings
+        Object.values(groupedSettings).forEach(categorySettings => {
+          if (Array.isArray(categorySettings)) {
+            categorySettings.forEach(setting => {
+              // Convert string values to appropriate types
+              let value = setting.value;
+              if (value === 'true') value = true;
+              else if (value === 'false') value = false;
+              else if (!isNaN(value) && value !== '') value = parseFloat(value);
+              
+              flatSettings[setting.key] = value;
+            });
+          }
+        });
+        
+        setSettings(prev => ({ ...prev, ...flatSettings }));
       }
     } catch (error) {
       console.error('Failed to fetch settings:', error);
@@ -88,25 +99,19 @@ const Settings = () => {
   const handleReset = () => {
     if (window.confirm('Are you sure you want to reset to default settings?')) {
       setSettings({
-        minLoanAmount: 1000,
-        maxLoanAmount: 500000,
-        minLoanDuration: 7,
-        maxLoanDuration: 365,
-        defaultInterestRate: 10,
-        maxInterestRate: 36,
-        defaultTrustScore: 50,
-        minTrustScoreForLending: 30,
-        repaymentScoreImpact: 5,
-        latePaymentPenalty: 10,
-        requireIdVerification: true,
-        requireFaceVerification: true,
-        autoApproveVerifiedUsers: false,
-        enableEmailNotifications: true,
-        enableSmsNotifications: false,
-        reminderDaysBeforeDue: 3,
-        platformFeePercent: 1,
-        maintenanceMode: false,
-        allowNewRegistrations: true
+        min_transaction_amount: 500,
+        max_transaction_amount: 100000,
+        min_loan_duration_days: 7,
+        max_loan_duration_days: 365,
+        default_interest_rate: 10,
+        trust_score_default: 50,
+        repayment_score_default: 50,
+        auto_block_report_threshold: 5,
+        require_id_verification: true,
+        require_face_verification: true,
+        enable_email_notifications: true,
+        enable_sms_notifications: true,
+        enable_whatsapp_notifications: true
       });
       toast.info('Settings reset to default values');
     }
@@ -149,9 +154,9 @@ const Settings = () => {
                 <label className="form-label">Minimum Loan Amount (₹)</label>
                 <input
                   type="number"
-                  name="minLoanAmount"
+                  name="min_transaction_amount"
                   className="form-input"
-                  value={settings.minLoanAmount}
+                  value={settings.min_transaction_amount}
                   onChange={handleInputChange}
                   min="100"
                 />
@@ -160,9 +165,9 @@ const Settings = () => {
                 <label className="form-label">Maximum Loan Amount (₹)</label>
                 <input
                   type="number"
-                  name="maxLoanAmount"
+                  name="max_transaction_amount"
                   className="form-input"
-                  value={settings.maxLoanAmount}
+                  value={settings.max_transaction_amount}
                   onChange={handleInputChange}
                 />
               </div>
@@ -170,9 +175,9 @@ const Settings = () => {
                 <label className="form-label">Minimum Duration (Days)</label>
                 <input
                   type="number"
-                  name="minLoanDuration"
+                  name="min_loan_duration_days"
                   className="form-input"
-                  value={settings.minLoanDuration}
+                  value={settings.min_loan_duration_days}
                   onChange={handleInputChange}
                   min="1"
                 />
@@ -181,9 +186,9 @@ const Settings = () => {
                 <label className="form-label">Maximum Duration (Days)</label>
                 <input
                   type="number"
-                  name="maxLoanDuration"
+                  name="max_loan_duration_days"
                   className="form-input"
-                  value={settings.maxLoanDuration}
+                  value={settings.max_loan_duration_days}
                   onChange={handleInputChange}
                 />
               </div>
@@ -191,21 +196,9 @@ const Settings = () => {
                 <label className="form-label">Default Interest Rate (%)</label>
                 <input
                   type="number"
-                  name="defaultInterestRate"
+                  name="default_interest_rate"
                   className="form-input"
-                  value={settings.defaultInterestRate}
-                  onChange={handleInputChange}
-                  min="0"
-                  step="0.1"
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label">Maximum Interest Rate (%)</label>
-                <input
-                  type="number"
-                  name="maxInterestRate"
-                  className="form-input"
-                  value={settings.maxInterestRate}
+                  value={settings.default_interest_rate}
                   onChange={handleInputChange}
                   min="0"
                   step="0.1"
@@ -226,9 +219,9 @@ const Settings = () => {
                 <label className="form-label">Default Trust Score</label>
                 <input
                   type="number"
-                  name="defaultTrustScore"
+                  name="trust_score_default"
                   className="form-input"
-                  value={settings.defaultTrustScore}
+                  value={settings.trust_score_default}
                   onChange={handleInputChange}
                   min="0"
                   max="100"
@@ -236,43 +229,30 @@ const Settings = () => {
                 <span className="form-hint">New users start with this score</span>
               </div>
               <div className="form-group">
-                <label className="form-label">Min Trust Score for Lending</label>
+                <label className="form-label">Default Repayment Score</label>
                 <input
                   type="number"
-                  name="minTrustScoreForLending"
+                  name="repayment_score_default"
                   className="form-input"
-                  value={settings.minTrustScoreForLending}
+                  value={settings.repayment_score_default}
                   onChange={handleInputChange}
                   min="0"
                   max="100"
                 />
-                <span className="form-hint">Borrowers below this cannot borrow</span>
+                <span className="form-hint">Initial repayment score for users</span>
               </div>
               <div className="form-group">
-                <label className="form-label">Repayment Score Impact</label>
+                <label className="form-label">Auto Block Report Threshold</label>
                 <input
                   type="number"
-                  name="repaymentScoreImpact"
+                  name="auto_block_report_threshold"
                   className="form-input"
-                  value={settings.repaymentScoreImpact}
+                  value={settings.auto_block_report_threshold}
                   onChange={handleInputChange}
-                  min="0"
+                  min="1"
                   max="20"
                 />
-                <span className="form-hint">Points added/removed per repayment</span>
-              </div>
-              <div className="form-group">
-                <label className="form-label">Late Payment Penalty</label>
-                <input
-                  type="number"
-                  name="latePaymentPenalty"
-                  className="form-input"
-                  value={settings.latePaymentPenalty}
-                  onChange={handleInputChange}
-                  min="0"
-                  max="50"
-                />
-                <span className="form-hint">Points deducted for late payments</span>
+                <span className="form-hint">Reports needed to auto-block user</span>
               </div>
             </div>
           </div>
@@ -293,8 +273,8 @@ const Settings = () => {
                 <label className="toggle">
                   <input
                     type="checkbox"
-                    name="requireIdVerification"
-                    checked={settings.requireIdVerification}
+                    name="require_id_verification"
+                    checked={settings.require_id_verification}
                     onChange={handleInputChange}
                   />
                   <span className="toggle-slider"></span>
@@ -309,24 +289,8 @@ const Settings = () => {
                 <label className="toggle">
                   <input
                     type="checkbox"
-                    name="requireFaceVerification"
-                    checked={settings.requireFaceVerification}
-                    onChange={handleInputChange}
-                  />
-                  <span className="toggle-slider"></span>
-                </label>
-              </div>
-
-              <div className="toggle-item">
-                <div className="toggle-info">
-                  <h4>Auto-approve Verified Users</h4>
-                  <p>Automatically approve users who complete all verification</p>
-                </div>
-                <label className="toggle">
-                  <input
-                    type="checkbox"
-                    name="autoApproveVerifiedUsers"
-                    checked={settings.autoApproveVerifiedUsers}
+                    name="require_face_verification"
+                    checked={settings.require_face_verification}
                     onChange={handleInputChange}
                   />
                   <span className="toggle-slider"></span>
@@ -351,8 +315,8 @@ const Settings = () => {
                 <label className="toggle">
                   <input
                     type="checkbox"
-                    name="enableEmailNotifications"
-                    checked={settings.enableEmailNotifications}
+                    name="enable_email_notifications"
+                    checked={settings.enable_email_notifications}
                     onChange={handleInputChange}
                   />
                   <span className="toggle-slider"></span>
@@ -367,87 +331,28 @@ const Settings = () => {
                 <label className="toggle">
                   <input
                     type="checkbox"
-                    name="enableSmsNotifications"
-                    checked={settings.enableSmsNotifications}
+                    name="enable_sms_notifications"
+                    checked={settings.enable_sms_notifications}
                     onChange={handleInputChange}
                   />
                   <span className="toggle-slider"></span>
                 </label>
               </div>
-            </div>
 
-            <div className="form-group" style={{ marginTop: '1rem' }}>
-              <label className="form-label">Reminder Days Before Due</label>
-              <input
-                type="number"
-                name="reminderDaysBeforeDue"
-                className="form-input"
-                value={settings.reminderDaysBeforeDue}
-                onChange={handleInputChange}
-                min="1"
-                max="30"
-                style={{ maxWidth: '200px' }}
-              />
-              <span className="form-hint">Days before due date to send reminder</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Platform Settings */}
-        <div className="card full-width">
-          <div className="card-header">
-            <h3><FiSettings /> Platform Settings</h3>
-          </div>
-          <div className="card-body">
-            <div className="settings-row">
-              <div className="form-group">
-                <label className="form-label">Platform Fee (%)</label>
-                <input
-                  type="number"
-                  name="platformFeePercent"
-                  className="form-input"
-                  value={settings.platformFeePercent}
-                  onChange={handleInputChange}
-                  min="0"
-                  max="10"
-                  step="0.1"
-                  style={{ maxWidth: '200px' }}
-                />
-                <span className="form-hint">Fee charged on successful loans</span>
-              </div>
-
-              <div className="toggle-group">
-                <div className="toggle-item inline">
-                  <div className="toggle-info">
-                    <h4>Maintenance Mode</h4>
-                    <p>Disable platform for users</p>
-                  </div>
-                  <label className="toggle">
-                    <input
-                      type="checkbox"
-                      name="maintenanceMode"
-                      checked={settings.maintenanceMode}
-                      onChange={handleInputChange}
-                    />
-                    <span className="toggle-slider danger"></span>
-                  </label>
+              <div className="toggle-item">
+                <div className="toggle-info">
+                  <h4>WhatsApp Notifications</h4>
+                  <p>Send WhatsApp notifications for updates</p>
                 </div>
-
-                <div className="toggle-item inline">
-                  <div className="toggle-info">
-                    <h4>Allow New Registrations</h4>
-                    <p>Allow new users to sign up</p>
-                  </div>
-                  <label className="toggle">
-                    <input
-                      type="checkbox"
-                      name="allowNewRegistrations"
-                      checked={settings.allowNewRegistrations}
-                      onChange={handleInputChange}
-                    />
-                    <span className="toggle-slider"></span>
-                  </label>
-                </div>
+                <label className="toggle">
+                  <input
+                    type="checkbox"
+                    name="enable_whatsapp_notifications"
+                    checked={settings.enable_whatsapp_notifications}
+                    onChange={handleInputChange}
+                  />
+                  <span className="toggle-slider"></span>
+                </label>
               </div>
             </div>
           </div>

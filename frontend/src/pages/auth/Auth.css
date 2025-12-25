@@ -109,6 +109,20 @@
   box-sizing: border-box;
 }
 
+.forgot-password-link {
+  display: block;
+  text-align: right;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline;
+}
+
 .form-input:focus {
   outline: none;
   border-color: var(--primary);
@@ -253,6 +267,28 @@ input[type="text"] {
   color: var(--danger);
   font-size: 0.75rem;
   margin-top: 0.25rem;
+}
+
+.input-error {
+  border-color: var(--danger) !important;
+}
+
+.password-strength-label {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+.password-strength-label.weak {
+  color: var(--danger);
+}
+
+.password-strength-label.medium {
+  color: var(--warning);
+}
+
+.password-strength-label.strong {
+  color: var(--success);
 }
 
 .password-strength {

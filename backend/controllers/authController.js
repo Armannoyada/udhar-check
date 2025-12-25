@@ -1,6 +1,7 @@
 const { User, ActivityLog } = require('../models/associations');
 const { generateToken } = require('../utils/jwt');
 const { calculateTrustScore, calculateRepaymentScore } = require('../services/scoringService');
+const { Op } = require('sequelize');
 
 // Register new user
 exports.register = async (req, res) => {
@@ -456,6 +457,105 @@ exports.changePassword = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Failed to change password',
+      error: error.message
+    });
+  }
+};
+
+// Reset password (Forgot password)
+exports.resetPassword = async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+
+    // Validate required fields
+    if (!email || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email and new password are required',
+        field: !email ? 'email' : 'newPassword'
+      });
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please enter a valid email address',
+        field: 'email'
+      });
+    }
+
+    // Validate password strength
+    if (newPassword.length < 8) {
+      return res.status(400).json({
+        success: false,
+        message: 'Password must be at least 8 characters long',
+        field: 'newPassword'
+      });
+    }
+
+    // Check for password complexity
+    const hasUpperCase = /[A-Z]/.test(newPassword);
+    const hasLowerCase = /[a-z]/.test(newPassword);
+    const hasNumber = /[0-9]/.test(newPassword);
+
+    if (!hasUpperCase || !hasLowerCase || !hasNumber) {
+      return res.status(400).json({
+        success: false,
+        message: 'Password must contain at least one uppercase letter, one lowercase letter, and one number',
+        field: 'newPassword'
+      });
+    }
+
+    // Find user by email (case-insensitive search)
+    const user = await User.findOne({ 
+      where: { 
+        email: {
+          [Op.iLike]: email.trim()
+        }
+      } 
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'No account found with this email address',
+        field: 'email'
+      });
+    }
+
+    // Check if user is blocked
+    if (user.isBlocked) {
+      return res.status(403).json({
+        success: false,
+        message: 'Your account has been blocked. Please contact support.',
+        reason: user.blockReason
+      });
+    }
+
+    // Update password (will be hashed automatically by the model)
+    user.password = newPassword;
+    await user.save();
+
+    // Log activity
+    await ActivityLog.create({
+      userId: user.id,
+      action: 'RESET_PASSWORD',
+      description: 'User reset password via forgot password',
+      ipAddress: req.ip,
+      userAgent: req.get('User-Agent')
+    });
+
+    res.json({
+      success: true,
+      message: 'Password updated successfully. You can now login with your new password.'
+    });
+  } catch (error) {
+    console.error('Reset password error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to reset password. Please try again later.',
       error: error.message
     });
   }

@@ -6,11 +6,15 @@ import { useAuth } from './context/AuthContext';
 import MainLayout from './layouts/MainLayout';
 import AuthLayout from './layouts/AuthLayout';
 
+// Landing Page
+import Landing from './pages/Landing/Landing';
+
 // Auth Pages
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Onboarding from './pages/auth/Onboarding';
 import VerificationPending from './pages/auth/VerificationPending';
+import ForgotPassword from './pages/auth/ForgotPassword';
 
 // Lender Pages
 import LenderDashboard from './pages/lender/Dashboard';
@@ -173,6 +177,7 @@ function App() {
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
         <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
+        <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
       </Route>
 
       {/* Onboarding Route */}
@@ -231,9 +236,11 @@ function App() {
         <Route path="notifications" element={<Notifications />} />
       </Route>
 
-      {/* Default Route */}
-      <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="*" element={<Navigate to="/login" replace />} />
+      {/* Landing Page - Public Home Route */}
+      <Route path="/" element={<Landing />} />
+      
+      {/* 404 - Redirect to Landing */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

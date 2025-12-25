@@ -24,6 +24,10 @@ const loginValidation = [
 // Public routes
 router.post('/register', registerValidation, validate, authController.register);
 router.post('/login', loginValidation, validate, authController.login);
+router.post('/reset-password', [
+  body('email').isEmail().normalizeEmail().withMessage('Valid email is required'),
+  body('newPassword').isLength({ min: 8 }).withMessage('Password must be at least 8 characters')
+], validate, authController.resetPassword);
 
 // Protected routes
 router.get('/profile', verifyToken, authController.getProfile);

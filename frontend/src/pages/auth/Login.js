@@ -5,7 +5,22 @@ import { toast } from 'react-toastify';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, loginDemo } = useAuth();
+    // Demo login handler
+    const handleDemoLogin = (role) => {
+      loginDemo(role).then((user) => {
+        toast.success('Demo login successful!');
+        if (!user.isOnboardingComplete && user.role !== 'admin') {
+          navigate('/onboarding');
+        } else if (user.role === 'admin') {
+          navigate('/admin');
+        } else if (user.role === 'lender') {
+          navigate('/lender');
+        } else {
+          navigate('/borrower');
+        }
+      });
+    };
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -78,7 +93,22 @@ const Login = () => {
             {loading ? <span className="spinner"></span> : 'Sign In'}
           </button>
         </div>
+
       </form>
+
+      {/* Demo Login Buttons */}
+      <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+        <div style={{ marginBottom: '0.5rem', fontWeight: 500 }}>Demo Login</div>
+        <button type="button" className="btn btn-outline" style={{ margin: '0 0.5rem' }} onClick={() => handleDemoLogin('admin')}>
+          Login as Admin
+        </button>
+        <button type="button" className="btn btn-outline" style={{ margin: '0 0.5rem' }} onClick={() => handleDemoLogin('lender')}>
+          Login as Lender
+        </button>
+        <button type="button" className="btn btn-outline" style={{ margin: '0 0.5rem' }} onClick={() => handleDemoLogin('borrower')}>
+          Login as Borrower
+        </button>
+      </div>
 
       <p className="auth-footer">
         Don't have an account? <Link to="/register">Sign up</Link>

@@ -28,6 +28,15 @@ const Profile = () => {
   const webcamRef = useRef(null);
   const [validationErrors, setValidationErrors] = useState({});
 
+
+  // --- Fix for missing state/refs ---
+  const [verificationLoading, setVerificationLoading] = useState(false);
+  const [showEmailVerify, setShowEmailVerify] = useState(false);
+  const [showPhoneVerify, setShowPhoneVerify] = useState(false);
+  const [emailCode, setEmailCode] = useState('');
+  const [phoneCode, setPhoneCode] = useState('');
+  const fileInputRef = useRef(null);
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',

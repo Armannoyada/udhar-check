@@ -79,6 +79,44 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+
+  // Demo login for frontend-only demo
+  const loginDemo = async (role) => {
+    // Dummy users for demo
+    const demoUsers = {
+      admin: {
+        id: 'demo-admin',
+        email: 'admin@demo.com',
+        firstName: 'Admin',
+        lastName: 'User',
+        role: 'admin',
+        isOnboardingComplete: true
+      },
+      lender: {
+        id: 'demo-lender',
+        email: 'lender@demo.com',
+        firstName: 'Lender',
+        lastName: 'User',
+        role: 'lender',
+        isOnboardingComplete: true
+      },
+      borrower: {
+        id: 'demo-borrower',
+        email: 'borrower@demo.com',
+        firstName: 'Borrower',
+        lastName: 'User',
+        role: 'borrower',
+        isOnboardingComplete: true
+      }
+    };
+    const user = demoUsers[role];
+    localStorage.setItem('token', 'demo-token');
+    localStorage.setItem('user', JSON.stringify(user));
+    setUser(user);
+    setIsAuthenticated(true);
+    return user;
+  };
+
   const value = {
     user,
     loading,
@@ -87,7 +125,8 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     updateUser,
-    refreshUser
+    refreshUser,
+    loginDemo
   };
 
   return (

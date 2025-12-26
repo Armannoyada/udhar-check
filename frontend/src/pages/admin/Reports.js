@@ -80,7 +80,7 @@ const Reports = () => {
       if (activeTab === 'reports') {
         await adminAPI.resolveReport(selectedItem.id, { 
           status: action,
-          adminNote: actionNote 
+          adminNotes: actionNote 
         });
       } else {
         await adminAPI.resolveDispute(selectedItem.id, { 

@@ -46,7 +46,14 @@ export const authAPI = {
   resetPassword: (data) => api.post('/auth/reset-password', data),
   completeOnboarding: (formData) => api.post('/auth/onboarding', formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
-  })
+  }),
+  uploadProfilePicture: (formData) => api.post('/auth/profile-picture', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }),
+  sendEmailVerification: () => api.post('/auth/send-email-verification'),
+  verifyEmail: (data) => api.post('/auth/verify-email', data),
+  sendPhoneVerification: () => api.post('/auth/send-phone-verification'),
+  verifyPhone: (data) => api.post('/auth/verify-phone', data)
 };
 
 // Loans API

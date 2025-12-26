@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { adminAPI } from '../../services/api';
+import { adminAPI, reportsAPI, disputesAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import { 
   FiAlertTriangle, 
@@ -36,7 +36,7 @@ const Reports = () => {
       setLoading(true);
       const params = statusFilter !== 'all' ? { status: statusFilter } : {};
       const response = await adminAPI.getReports(params);
-      setReports(response.data.data?.reports || []);
+      setReports(response.data.data?.reports || response.data.data || []);
     } catch (error) {
       console.error('Failed to fetch reports:', error);
       toast.error('Failed to load reports');
@@ -50,7 +50,7 @@ const Reports = () => {
       setLoading(true);
       const params = statusFilter !== 'all' ? { status: statusFilter } : {};
       const response = await adminAPI.getDisputes(params);
-      setDisputes(response.data.data?.disputes || []);
+      setDisputes(response.data.data?.disputes || response.data.data || []);
     } catch (error) {
       console.error('Failed to fetch disputes:', error);
       toast.error('Failed to load disputes');
@@ -64,6 +64,7 @@ const Reports = () => {
       pending: { class: 'badge-warning', label: 'Pending' },
       open: { class: 'badge-warning', label: 'Open' },
       investigating: { class: 'badge-info', label: 'Investigating' },
+      under_review: { class: 'badge-info', label: 'Under Review' },
       resolved: { class: 'badge-success', label: 'Resolved' },
       dismissed: { class: 'badge-gray', label: 'Dismissed' },
       closed: { class: 'badge-gray', label: 'Closed' }
@@ -84,7 +85,7 @@ const Reports = () => {
       } else {
         await adminAPI.resolveDispute(selectedItem.id, { 
           status: action,
-          adminNotes: actionNote 
+          adminNote: actionNote 
         });
       }
       

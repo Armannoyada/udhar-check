@@ -178,6 +178,103 @@ exports.getUserDetails = async (req, res) => {
   }
 };
 
+// Delete user
+exports.deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    if (user.role === 'admin') {
+      return res.status(403).json({
+        success: false,
+        message: 'Cannot delete admin users'
+      });
+    }
+
+    const userEmail = user.email;
+    
+    // Delete related records first to avoid foreign key constraint errors
+    const { Notification, ActivityLog, Report, Dispute, LoanRequest, Repayment } = require('../models/associations');
+    
+    // Delete notifications for this user
+    await Notification.destroy({ where: { userId: id } });
+    
+    // Delete activity logs for this user
+    await ActivityLog.destroy({ where: { userId: id } });
+    
+    // Delete reports filed by or against this user
+    await Report.destroy({ 
+      where: { 
+        [require('sequelize').Op.or]: [
+          { reporterId: id },
+          { reportedUserId: id }
+        ]
+      }
+    });
+    
+    // Handle disputes - set user references to null instead of deleting
+    await Dispute.update(
+      { raisedById: null },
+      { where: { raisedById: id } }
+    );
+    await Dispute.update(
+      { againstUserId: null },
+      { where: { againstUserId: id } }
+    );
+    
+    // Handle repayments - set user references to null
+    await Repayment.update(
+      { borrowerId: null },
+      { where: { borrowerId: id } }
+    );
+    await Repayment.update(
+      { lenderId: null },
+      { where: { lenderId: id } }
+    );
+    
+    // Handle loan requests - set user references to null
+    await LoanRequest.update(
+      { borrowerId: null },
+      { where: { borrowerId: id } }
+    );
+    await LoanRequest.update(
+      { lenderId: null },
+      { where: { lenderId: id } }
+    );
+    
+    // Now delete the user
+    await user.destroy();
+
+    // Log activity (use admin's ID since user is deleted)
+    await ActivityLog.create({
+      userId: req.user.id,
+      action: 'DELETE_USER',
+      description: `Deleted user: ${userEmail}`,
+      entityType: 'User',
+      entityId: id
+    });
+
+    res.json({
+      success: true,
+      message: 'User deleted successfully'
+    });
+  } catch (error) {
+    console.error('Delete user error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to delete user: ' + error.message,
+      error: error.message
+    });
+  }
+};
+
 // Block/Unblock user
 exports.toggleBlockUser = async (req, res) => {
   try {

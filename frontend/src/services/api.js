@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_URL = process.env.REACT_APP_API_URL || 'https://jls5gvbf-5000.euw.devtunnels.ms/api';
 
 const api = axios.create({
   baseURL: API_URL,
@@ -114,6 +114,8 @@ export const adminAPI = {
   getUsers: (params) => api.get('/admin/users', { params }),
   getUserDetails: (id) => api.get(`/admin/users/${id}`),
   toggleBlockUser: (id, data) => api.put(`/admin/users/${id}/block`, data),
+  banUser: (id, data) => api.put(`/admin/users/${id}/block`, { block: data.banned, reason: data.reason }),
+  deleteUser: (id) => api.delete(`/admin/users/${id}`),
   approveUserVerification: (id, data) => api.put(`/admin/users/${id}/verify`, data),
   rejectUserVerification: (id, data) => api.put(`/admin/users/${id}/reject`, data),
   partialRejectVerification: (id, data) => api.put(`/admin/users/${id}/partial-reject`, data),
@@ -124,6 +126,13 @@ export const adminAPI = {
   getLoans: (params) => api.get('/admin/loans', { params }),
   getSettings: () => api.get('/admin/settings'),
   updateSetting: (data) => api.put('/admin/settings', data),
+  updateSettings: (settings) => {
+    // Update each setting individually
+    const promises = Object.entries(settings).map(([key, value]) => 
+      api.put('/admin/settings', { key, value: String(value) })
+    );
+    return Promise.all(promises);
+  },
   getActivityLogs: (params) => api.get('/admin/activity-logs', { params })
 };
 

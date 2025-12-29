@@ -34,7 +34,7 @@
 .filter-tab {
   padding: 0.625rem 1.25rem;
   background: var(--white);
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   border-radius: 20px;
   font-size: 0.875rem;
   font-weight: 500;
@@ -66,12 +66,15 @@
   background: var(--white);
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 2px solid var(--gray-200);
   overflow: hidden;
-  transition: box-shadow 0.2s;
+  transition: all 0.2s;
 }
 
 .loan-card:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary);
+  transform: translateY(-2px);
 }
 
 .loan-card-header {
@@ -135,6 +138,7 @@
   background: var(--gray-light);
   border-radius: 8px;
   margin-bottom: 1rem;
+  border: 1px solid var(--gray-200);
 }
 
 .progress-header {
@@ -183,6 +187,7 @@
   padding: 0.75rem;
   background: rgba(99, 102, 241, 0.05);
   border-radius: 8px;
+  border: 1px solid rgba(99, 102, 241, 0.2);
 }
 
 .lender-avatar {

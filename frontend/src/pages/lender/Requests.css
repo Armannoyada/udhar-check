@@ -13,6 +13,7 @@
   padding: 1rem;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
+  border: 2px solid var(--gray-200);
 }
 
 .filter-group {
@@ -54,7 +55,7 @@
 
 .request-card {
   transition: all 0.2s ease;
-  border: 1px solid var(--gray-200);
+  border: 2px solid var(--gray-200);
   overflow: hidden;
 }
 
@@ -142,6 +143,7 @@
   padding: 0.875rem;
   background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
   border-radius: 10px;
+  border: 1px solid var(--gray-200);
   border-left: 3px solid var(--primary);
   line-height: 1.5;
 }
@@ -166,6 +168,7 @@
   padding: 0.5rem;
   background: var(--gray-50);
   border-radius: 8px;
+  border: 1px solid var(--gray-200);
 }
 
 .meta-label {

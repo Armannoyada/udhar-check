@@ -84,11 +84,13 @@
 /* Table */
 .table-container {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 1000px;
 }
 
 .table th,
@@ -154,12 +156,19 @@
   display: block;
   font-size: 0.8125rem;
   margin-bottom: 0.125rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 150px;
 }
 
 .user-cell small {
   display: block;
   color: var(--text-light);
   font-size: 0.7rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-all;
+  max-width: 180px;
 }
 
 .user-cell .phone {
@@ -174,6 +183,15 @@
   font-weight: 500;
   border-radius: 4px;
   text-transform: capitalize;
+  cursor: default;
+}
+
+.role-badge .role-full {
+  display: inline;
+}
+
+.role-badge .role-short {
+  display: none;
 }
 
 .role-badge.lender {
@@ -568,6 +586,240 @@
   border: 1px solid var(--border);
 }
 
+/* ===== USER DETAIL MODAL - Clean Design ===== */
+.user-detail-modal {
+  background: var(--white);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+}
+
+.user-detail-modal .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.user-detail-modal .modal-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.user-detail-modal .modal-close {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.5rem;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.user-detail-modal .modal-close:hover {
+  background: var(--gray-light);
+  color: var(--text-primary);
+}
+
+.user-detail-modal .modal-body {
+  padding: 1.5rem;
+}
+
+/* User Profile Header */
+.user-profile-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  overflow: hidden;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-avatar .avatar-initials {
+  color: white;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.profile-name {
+  font-size: 1.375rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary);
+}
+
+.profile-role {
+  display: inline-block;
+  padding: 0.375rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 20px;
+  text-transform: capitalize;
+}
+
+.profile-role.lender {
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--primary);
+}
+
+.profile-role.borrower {
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--info);
+}
+
+.profile-role.admin {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--warning);
+}
+
+/* User Info Fields */
+.user-info-fields {
+  margin-bottom: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.info-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.info-field label {
+  font-size: 0.8125rem;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.info-field span {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  text-align: right;
+  word-break: break-word;
+  max-width: 60%;
+}
+
+/* User Scores Grid */
+.user-scores-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.score-card {
+  text-align: center;
+  padding: 1rem 0.5rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.score-card.score-high {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.score-card.score-medium {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+.score-card.score-low {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.score-card.rating {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+.score-card .score-number {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.score-card.score-high .score-number {
+  color: var(--success);
+}
+
+.score-card.score-medium .score-number {
+  color: var(--warning);
+}
+
+.score-card.score-low .score-number {
+  color: var(--danger);
+}
+
+.score-card.rating .score-number {
+  color: var(--warning);
+  font-size: 1.125rem;
+}
+
+.score-card .score-name {
+  font-size: 0.65rem;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Government ID Section */
+.gov-id-section {
+  margin-top: 1rem;
+}
+
+.gov-id-section label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-light);
+  margin-bottom: 0.75rem;
+}
+
+.gov-id-section img {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.user-detail-modal .modal-footer {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
 /* Buttons */
 .btn {
   display: inline-flex;
@@ -675,6 +927,12 @@
 
   .table-container {
     margin: 0 -0.75rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table {
+    min-width: 600px;
   }
 
   .table th,
@@ -691,32 +949,52 @@
   .table th:nth-child(4),
   .table td:nth-child(4),
   .table th:nth-child(5),
-  .table td:nth-child(5) {
+  .table td:nth-child(5),
+  .table th:nth-child(6),
+  .table td:nth-child(6) {
+    display: none;
+  }
+
+  /* Hide user avatar on mobile */
+  .user-avatar {
     display: none;
   }
 
   .user-cell {
-    min-width: 140px;
-    gap: 0.5rem;
-  }
-
-  .user-avatar {
-    width: 36px;
-    height: 36px;
-    font-size: 0.7rem;
+    min-width: 120px;
+    gap: 0;
   }
 
   .user-cell strong {
     font-size: 0.75rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 120px;
   }
 
   .user-cell small {
     font-size: 0.65rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-all;
+    max-width: 140px;
+  }
+
+  /* Show B/L for roles on mobile */
+  .role-badge .role-full {
+    display: none;
+  }
+
+  .role-badge .role-short {
+    display: inline;
+    font-weight: 700;
+    font-size: 0.8rem;
   }
 
   .role-badge {
-    padding: 0.2rem 0.5rem;
-    font-size: 0.65rem;
+    padding: 0.25rem 0.5rem;
+    min-width: 28px;
+    text-align: center;
   }
 
   .score-badge {
@@ -761,65 +1039,51 @@
     text-align: center;
   }
 
-  /* Modal Adjustments */
-  .modal {
+  /* User Detail Modal Adjustments */
+  .user-detail-modal {
     max-width: 95%;
     margin: 1rem;
   }
 
-  .modal-header {
-    padding: 0.875rem 1rem;
+  .user-detail-modal .modal-header {
+    padding: 1rem 1.25rem;
   }
 
-  .modal-title {
-    font-size: 1rem;
+  .user-detail-modal .modal-body {
+    padding: 1.25rem;
   }
 
-  .modal-body {
-    padding: 1rem;
+  .profile-avatar {
+    width: 70px;
+    height: 70px;
   }
 
-  .modal-footer {
-    padding: 0.875rem 1rem;
-    flex-wrap: wrap;
-  }
-
-  .modal-footer .btn {
-    flex: 1;
-    min-width: 120px;
-  }
-
-  .user-detail-grid {
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .user-detail-photo {
-    width: 80px;
-    height: 80px;
-  }
-
-  .photo-placeholder {
+  .profile-avatar .avatar-initials {
     font-size: 1.5rem;
   }
 
-  .user-detail-info h2 {
-    font-size: 1.125rem;
-  }
-
-  .scores-row {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
-  }
-
-  .score-box {
-    padding: 0.875rem;
-  }
-
-  .score-box .score-value {
+  .profile-name {
     font-size: 1.25rem;
+  }
+
+  .user-scores-grid {
+    gap: 0.5rem;
+  }
+
+  .score-card {
+    padding: 0.75rem 0.25rem;
+  }
+
+  .score-card .score-number {
+    font-size: 1.25rem;
+  }
+
+  .score-card.rating .score-number {
+    font-size: 1rem;
+  }
+
+  .user-detail-modal .modal-footer {
+    padding: 1rem 1.25rem;
   }
 
   .btn {
@@ -837,6 +1101,15 @@
     font-size: 1.125rem;
   }
 
+  .table-container {
+    margin: 0 -0.5rem;
+    padding: 0 0.5rem;
+  }
+
+  .table {
+    min-width: 400px;
+  }
+
   .table th,
   .table td {
     padding: 0.5rem 0.375rem;
@@ -844,23 +1117,83 @@
 
   /* Show only essential columns on very small screens */
   .table th:nth-child(3),
-  .table td:nth-child(3),
-  .table th:nth-child(6),
-  .table td:nth-child(6) {
+  .table td:nth-child(3) {
     display: none;
   }
 
   .user-cell {
-    min-width: 120px;
+    min-width: 100px;
   }
 
-  .user-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
+  .user-cell strong {
+    max-width: 90px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .user-cell small {
+    max-width: 100px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-all;
   }
 
   .action-menu {
     right: -10px;
+  }
+
+  /* User Detail Modal - Bottom Sheet */
+  .user-detail-modal {
+    max-width: 100%;
+    max-height: 90vh;
+    margin: 0;
+    border-radius: 16px 16px 0 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .user-detail-modal .modal-body {
+    max-height: calc(90vh - 140px);
+    overflow-y: auto;
+  }
+
+  .profile-avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .profile-avatar .avatar-initials {
+    font-size: 1.25rem;
+  }
+
+  .profile-name {
+    font-size: 1.125rem;
+  }
+
+  .user-scores-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.375rem;
+  }
+
+  .score-card {
+    padding: 0.625rem 0.25rem;
+  }
+
+  .score-card .score-number {
+    font-size: 1rem;
+  }
+
+  .score-card .score-name {
+    font-size: 0.55rem;
+  }
+
+  .user-detail-modal .modal-footer {
+    flex-direction: column;
+  }
+
+  .user-detail-modal .modal-footer .btn {
+    width: 100%;
   }
 }

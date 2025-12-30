@@ -279,66 +279,81 @@ const Reports = () => {
       {/* Detail Modal */}
       {showModal && selectedItem && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal modal-lg" onClick={(e) => e.stopPropagation()}>
+          <div className="report-detail-modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3 className="modal-title">
                 {activeTab === 'reports' ? 'Report' : 'Dispute'} Details
               </h3>
-              <button className="modal-close" onClick={() => setShowModal(false)}>&times;</button>
+              <button className="modal-close" onClick={() => setShowModal(false)}>×</button>
             </div>
+            
             <div className="modal-body">
-              <div className="detail-section">
-                <label>Type</label>
-                <p>{selectedItem.reportType || selectedItem.disputeType || 'General'}</p>
-              </div>
-
-              <div className="detail-section">
-                <label>Status</label>
-                <span className={`badge ${getStatusBadge(selectedItem.status).class}`}>
+              {/* Status & Type Header */}
+              <div className="report-header-row">
+                <div className="report-type-box">
+                  <span className="type-label">{activeTab === 'reports' ? 'Type' : 'Type'}</span>
+                  <span className="type-value">{selectedItem.reportType || selectedItem.disputeType || 'General'}</span>
+                </div>
+                <span className={`status-badge-lg ${getStatusBadge(selectedItem.status).class}`}>
                   {getStatusBadge(selectedItem.status).label}
                 </span>
               </div>
 
-              <div className="detail-section">
-                <label>Description</label>
-                <p>{selectedItem.description || selectedItem.reason}</p>
+              {/* Description */}
+              <div className="report-field">
+                <label className="field-label">Description</label>
+                <p className="field-value description">{selectedItem.description || selectedItem.reason}</p>
               </div>
 
-              <div className="users-grid">
-                <div className="detail-section">
-                  <label>Reporter</label>
-                  <div className="user-card">
-                    <div className="avatar">
+              {/* Users Grid */}
+              <div className="report-users-grid">
+                <div className="report-user-card">
+                  <label className="field-label">Reporter</label>
+                  <div className="user-card-content reporter">
+                    <div className="user-initials">
                       {selectedItem.reporter?.firstName?.[0]}{selectedItem.reporter?.lastName?.[0]}
                     </div>
-                    <div>
-                      <strong>{selectedItem.reporter?.firstName} {selectedItem.reporter?.lastName}</strong>
-                      <span>{selectedItem.reporter?.email}</span>
+                    <div className="user-info">
+                      <span className="user-name">
+                        {selectedItem.reporter?.firstName} {selectedItem.reporter?.lastName}
+                      </span>
+                      <span className="user-email">{selectedItem.reporter?.email}</span>
                     </div>
                   </div>
                 </div>
 
                 {selectedItem.reportedUser && (
-                  <div className="detail-section">
-                    <label>Reported User</label>
-                    <div className="user-card">
-                      <div className="avatar danger">
+                  <div className="report-user-card">
+                    <label className="field-label">Reported User</label>
+                    <div className="user-card-content reported">
+                      <div className="user-initials">
                         {selectedItem.reportedUser?.firstName?.[0]}{selectedItem.reportedUser?.lastName?.[0]}
                       </div>
-                      <div>
-                        <strong>{selectedItem.reportedUser?.firstName} {selectedItem.reportedUser?.lastName}</strong>
-                        <span>{selectedItem.reportedUser?.email}</span>
+                      <div className="user-info">
+                        <span className="user-name">
+                          {selectedItem.reportedUser?.firstName} {selectedItem.reportedUser?.lastName}
+                        </span>
+                        <span className="user-email">{selectedItem.reportedUser?.email}</span>
                       </div>
                     </div>
                   </div>
                 )}
               </div>
 
+              {/* Loan Info if exists */}
+              {selectedItem.loan && (
+                <div className="report-field">
+                  <label className="field-label">Related Loan</label>
+                  <div className="loan-amount-display">₹{selectedItem.loan.amount?.toLocaleString()}</div>
+                </div>
+              )}
+
+              {/* Admin Note */}
               {(selectedItem.status === 'pending' || selectedItem.status === 'open') && (
-                <div className="detail-section">
-                  <label>Admin Note (Optional)</label>
+                <div className="report-field">
+                  <label className="field-label">Admin Note (Optional)</label>
                   <textarea
-                    className="form-input form-textarea"
+                    className="admin-note-input"
                     placeholder="Add a note about your decision..."
                     value={actionNote}
                     onChange={(e) => setActionNote(e.target.value)}
@@ -347,6 +362,7 @@ const Reports = () => {
                 </div>
               )}
             </div>
+            
             <div className="modal-footer">
               <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
                 Close
@@ -354,7 +370,7 @@ const Reports = () => {
               {(selectedItem.status === 'pending' || selectedItem.status === 'open') && (
                 <>
                   <button 
-                    className="btn btn-outline"
+                    className="btn btn-outline-danger"
                     onClick={() => handleResolve('dismissed')}
                     disabled={actionLoading}
                   >

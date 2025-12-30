@@ -31,6 +31,7 @@
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --radius: 8px;
   --radius-lg: 12px;
+  --border: #b6b6b6;
 }
 
 body {

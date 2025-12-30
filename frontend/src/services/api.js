@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { isDemoMode, demoResponses } from './demoData';
 
-const API_URL = process.env.REACT_APP_API_URL || 'https://jls5gvbf-5000.euw.devtunnels.ms/api';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 const api = axios.create({
   baseURL: API_URL,

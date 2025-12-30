@@ -854,7 +854,321 @@
 }
 
 /* Mobile Responsive */
+@media (max-width: 768px) {
+  .loan-details-page {
+    padding: 0.75rem;
+  }
+
+  .loan-details-page .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .page-title {
+    font-size: 1.25rem;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .loan-amount-display {
+    padding: 1.5rem 0;
+    margin-bottom: 1rem;
+  }
+
+  .loan-amount-display h2 {
+    font-size: 2rem;
+  }
+
+  .loan-info-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .info-item {
+    padding: 0.875rem 0.75rem;
+  }
+
+  .info-label {
+    font-size: 0.7rem;
+  }
+
+  .info-value {
+    font-size: 0.9375rem;
+  }
+
+  .purpose-box {
+    padding: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  .purpose-box strong {
+    font-size: 0.7rem;
+  }
+
+  .purpose-box p {
+    font-size: 0.875rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .action-buttons .btn-lg {
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9375rem;
+  }
+
+  .user-profile {
+    gap: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  .avatar-lg {
+    width: 56px;
+    height: 56px;
+    font-size: 1.125rem;
+  }
+
+  .user-info h3 {
+    font-size: 1.125rem;
+  }
+
+  .user-info p {
+    font-size: 0.8125rem;
+  }
+
+  .user-scores {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.625rem;
+    margin-bottom: 1rem;
+  }
+
+  .score-item {
+    padding: 0.875rem 0.625rem;
+  }
+
+  .score-item .score-value {
+    font-size: 1.5rem;
+  }
+
+  .score-item .score-label {
+    font-size: 0.7rem;
+  }
+
+  .verification-badges {
+    gap: 0.625rem;
+    margin-bottom: 1rem;
+  }
+
+  .verification-badge {
+    padding: 0.3125rem 0.625rem;
+    font-size: 0.7rem;
+  }
+
+  .contact-info {
+    padding: 0.875rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .contact-info h4 {
+    font-size: 0.7rem;
+    margin-bottom: 0.625rem;
+  }
+
+  .contact-item {
+    padding: 0.375rem 0;
+    gap: 0.625rem;
+  }
+
+  .contact-item svg {
+    font-size: 0.875rem;
+  }
+
+  .contact-item span,
+  .contact-item a {
+    font-size: 0.875rem;
+  }
+
+  .report-link {
+    padding-top: 0.875rem;
+  }
+
+  /* Repayments section */
+  .card-header h3 {
+    font-size: 1rem;
+  }
+
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table {
+    min-width: 500px;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+
+  .table th {
+    font-size: 0.7rem;
+  }
+
+  /* Modal adjustments */
+  .modal {
+    max-width: 95%;
+    margin: 0.75rem;
+  }
+
+  .modal-header {
+    padding: 1rem 1.25rem;
+  }
+
+  .modal-title {
+    font-size: 1rem;
+  }
+
+  .modal-body {
+    padding: 1.25rem;
+  }
+
+  .modal-footer {
+    flex-direction: column;
+    padding: 1rem 1.25rem;
+  }
+
+  .modal-footer .btn {
+    width: 100%;
+  }
+
+  /* Repayment modal */
+  .repayment-modal {
+    max-width: 95%;
+    max-height: 90vh;
+  }
+
+  .repayment-modal-header {
+    padding: 1rem 1.25rem;
+  }
+
+  .repayment-modal-title h3 {
+    font-size: 1.125rem;
+  }
+
+  .repayment-modal-body {
+    padding: 1.25rem;
+    gap: 1.125rem;
+  }
+
+  .repayment-label {
+    font-size: 0.8125rem;
+  }
+
+  .repayment-input,
+  .repayment-select,
+  .repayment-textarea {
+    padding: 0.8125rem 0.9375rem;
+    font-size: 0.9375rem;
+  }
+
+  .repayment-modal-footer {
+    padding: 1rem 1.25rem 1.25rem;
+  }
+
+  .repayment-btn {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.9375rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .loan-info-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .user-scores {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+
+  .score-item {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .score-item .score-value {
+    font-size: 1.5rem;
+  }
+
+  .score-item .score-label {
+    font-size: 0.65rem;
+  }
+}
+
 @media (max-width: 520px) {
+  .loan-details-page {
+    padding: 0.5rem;
+  }
+
+  .page-title {
+    font-size: 1.125rem;
+  }
+
+  .loan-amount-display h2 {
+    font-size: 1.75rem;
+  }
+
+  .loan-info-grid {
+    grid-template-columns: 1fr;
+    gap: 0.625rem;
+  }
+
+  .info-item {
+    padding: 0.75rem 0.625rem;
+  }
+
+  .action-buttons .btn-lg {
+    padding: 0.8125rem 1.25rem;
+    font-size: 0.875rem;
+  }
+
+  .avatar-lg {
+    width: 48px;
+    height: 48px;
+    font-size: 1rem;
+  }
+
+  .user-scores {
+    grid-template-columns: 1fr;
+    gap: 0.625rem;
+  }
+
+  .score-item {
+    padding: 0.875rem;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .score-item .score-value {
+    font-size: 1.75rem;
+  }
+
+  .score-item .score-label {
+    font-size: 0.8125rem;
+    text-align: left;
+  }
+
+  /* Repayment modal - bottom sheet style */
   .repayment-modal {
     max-width: 100%;
     max-height: 92vh;
@@ -895,6 +1209,18 @@
   .repayment-textarea {
     padding: 0.875rem 1rem;
     font-size: 1rem;
+  }
+
+  /* Table responsiveness */
+  .table {
+    min-width: 100%;
+    font-size: 0.75rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.5rem;
+    font-size: 0.75rem;
   }
 }
 

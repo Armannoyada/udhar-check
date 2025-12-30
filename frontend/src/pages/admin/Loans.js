@@ -200,66 +200,118 @@ const AdminLoans = () => {
       {/* Loan Details Modal */}
       {showModal && selectedLoan && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <div className="loan-detail-modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3>Loan Details</h3>
               <button className="modal-close" onClick={() => setShowModal(false)}>×</button>
             </div>
+            
             <div className="modal-body">
-              <div className="detail-row">
-                <span className="label">Loan ID:</span>
-                <span className="value">{selectedLoan.id}</span>
-              </div>
-              <div className="detail-row">
-                <span className="label">Amount:</span>
-                <span className="value">{formatCurrency(selectedLoan.amount)}</span>
-              </div>
-              <div className="detail-row">
-                <span className="label">Status:</span>
-                <span className={`badge ${getStatusBadge(selectedLoan.status).class}`}>
+              {/* Status & Amount Header */}
+              <div className="loan-header-section">
+                <div className="loan-amount-box">
+                  <span className="amount-label">Loan Amount</span>
+                  <span className="amount-value">{formatCurrency(selectedLoan.amount)}</span>
+                </div>
+                <span className={`status-badge-large ${getStatusBadge(selectedLoan.status).class}`}>
                   {getStatusBadge(selectedLoan.status).label}
                 </span>
               </div>
-              <div className="detail-row">
-                <span className="label">Purpose:</span>
-                <span className="value">{selectedLoan.purpose || 'General'}</span>
-              </div>
-              <div className="detail-row">
-                <span className="label">Duration:</span>
-                <span className="value">{selectedLoan.duration} days</span>
-              </div>
-              <div className="detail-row">
-                <span className="label">Interest Rate:</span>
-                <span className="value">{selectedLoan.interestRate || 2}%</span>
-              </div>
-              <div className="detail-row">
-                <span className="label">Borrower:</span>
-                <span className="value">
-                  {selectedLoan.borrower?.firstName} {selectedLoan.borrower?.lastName}
-                  <br />
-                  <small>{selectedLoan.borrower?.email}</small>
-                </span>
-              </div>
-              {selectedLoan.lender && (
-                <div className="detail-row">
-                  <span className="label">Lender:</span>
-                  <span className="value">
-                    {selectedLoan.lender?.firstName} {selectedLoan.lender?.lastName}
-                    <br />
-                    <small>{selectedLoan.lender?.email}</small>
-                  </span>
+
+              {/* Loan Details Grid */}
+              <div className="loan-details-grid">
+                <div className="detail-box">
+                  <span className="detail-label">Duration</span>
+                  <span className="detail-value">{selectedLoan.duration} days</span>
                 </div>
-              )}
-              <div className="detail-row">
-                <span className="label">Created:</span>
-                <span className="value">{new Date(selectedLoan.createdAt).toLocaleString()}</span>
+                <div className="detail-box">
+                  <span className="detail-label">Interest Rate</span>
+                  <span className="detail-value">{selectedLoan.interestRate || 2}%</span>
+                </div>
+                <div className="detail-box">
+                  <span className="detail-label">Purpose</span>
+                  <span className="detail-value">{selectedLoan.purpose || 'General'}</span>
+                </div>
+                <div className="detail-box">
+                  <span className="detail-label">Created</span>
+                  <span className="detail-value">{new Date(selectedLoan.createdAt).toLocaleDateString()}</span>
+                </div>
+                {selectedLoan.dueDate && (
+                  <div className="detail-box">
+                    <span className="detail-label">Due Date</span>
+                    <span className="detail-value">{new Date(selectedLoan.dueDate).toLocaleDateString()}</span>
+                  </div>
+                )}
+                {selectedLoan.totalRepayable && (
+                  <div className="detail-box">
+                    <span className="detail-label">Total Repayable</span>
+                    <span className="detail-value">{formatCurrency(selectedLoan.totalRepayable)}</span>
+                  </div>
+                )}
               </div>
+
+              {/* Borrower & Lender Side by Side */}
+              <div className="people-grid">
+                {/* Borrower Section */}
+                <div className="person-section">
+                  <h4 className="person-title">Borrower</h4>
+                  <div className="person-card">
+                    <div className="person-avatar borrower">
+                      {selectedLoan.borrower?.firstName?.[0]}{selectedLoan.borrower?.lastName?.[0]}
+                    </div>
+                    <div className="person-info">
+                      <span className="person-name">
+                        {selectedLoan.borrower?.firstName} {selectedLoan.borrower?.lastName}
+                      </span>
+                      <span className="person-email">{selectedLoan.borrower?.email}</span>
+                      {selectedLoan.borrower?.phone && (
+                        <span className="person-phone">{selectedLoan.borrower?.phone}</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Lender Section */}
+                {selectedLoan.lender && (
+                  <div className="person-section">
+                    <h4 className="person-title">Lender</h4>
+                    <div className="person-card">
+                      <div className="person-avatar lender">
+                        {selectedLoan.lender?.firstName?.[0]}{selectedLoan.lender?.lastName?.[0]}
+                      </div>
+                      <div className="person-info">
+                        <span className="person-name">
+                          {selectedLoan.lender?.firstName} {selectedLoan.lender?.lastName}
+                        </span>
+                        <span className="person-email">{selectedLoan.lender?.email}</span>
+                        {selectedLoan.lender?.phone && (
+                          <span className="person-phone">{selectedLoan.lender?.phone}</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Loan ID */}
+              <div className="loan-id-section">
+                <span className="id-label">Loan ID</span>
+                <span className="id-value">{selectedLoan.id}</span>
+              </div>
+
+              {/* Description */}
               {selectedLoan.description && (
-                <div className="detail-row full-width">
-                  <span className="label">Description:</span>
-                  <p className="value">{selectedLoan.description}</p>
+                <div className="description-section">
+                  <h4 className="description-title">Description</h4>
+                  <p className="description-text">{selectedLoan.description}</p>
                 </div>
               )}
+            </div>
+
+            <div className="modal-footer">
+              <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
+                Close
+              </button>
             </div>
           </div>
         </div>

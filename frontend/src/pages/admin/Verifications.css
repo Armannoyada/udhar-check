@@ -529,7 +529,7 @@
 .modal-body {
   padding: 1.5rem;
   overflow: auto;
-  display: flex;
+  /* display: flex; */
   align-items: center;
   justify-content: center;
 }

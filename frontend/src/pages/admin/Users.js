@@ -258,8 +258,9 @@ const Users = () => {
                         </div>
                       </td>
                       <td>
-                        <span className={`role-badge ${user.role}`}>
-                          {user.role}
+                        <span className={`role-badge ${user.role}`} title={user.role.charAt(0).toUpperCase() + user.role.slice(1)}>
+                          <span className="role-full">{user.role}</span>
+                          <span className="role-short">{user.role === 'borrower' ? 'B' : user.role === 'lender' ? 'L' : 'A'}</span>
                         </span>
                       </td>
                       <td>
@@ -367,59 +368,62 @@ const Users = () => {
       {/* User Details Modal */}
       {showUserModal && selectedUser && (
         <div className="modal-overlay" onClick={() => setShowUserModal(false)}>
-          <div className="modal modal-lg" onClick={(e) => e.stopPropagation()}>
+          <div className="user-detail-modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3 className="modal-title">User Details</h3>
-              <button className="modal-close" onClick={() => setShowUserModal(false)}>&times;</button>
+              <button className="modal-close" onClick={() => setShowUserModal(false)}>×</button>
             </div>
             <div className="modal-body">
-              <div className="user-detail-grid">
-                <div className="user-detail-photo">
+              {/* User Profile Header */}
+              <div className="user-profile-header">
+                <div className="profile-avatar">
                   {selectedUser.selfieUrl ? (
                     <img src={`http://localhost:5000${selectedUser.selfieUrl}`} alt="" />
                   ) : (
-                    <div className="photo-placeholder">
+                    <span className="avatar-initials">
                       {selectedUser.firstName?.[0]}{selectedUser.lastName?.[0]}
-                    </div>
+                    </span>
                   )}
                 </div>
-                <div className="user-detail-info">
-                  <h2>{selectedUser.firstName} {selectedUser.lastName}</h2>
-                  <p className={`role-badge ${selectedUser.role}`}>{selectedUser.role}</p>
-                  
-                  <div className="detail-row">
-                    <span className="detail-label">Email:</span>
-                    <span>{selectedUser.email}</span>
-                  </div>
-                  <div className="detail-row">
-                    <span className="detail-label">Phone:</span>
-                    <span>{selectedUser.phone}</span>
-                  </div>
-                  <div className="detail-row">
-                    <span className="detail-label">Location:</span>
-                    <span>{selectedUser.city}, {selectedUser.state}</span>
-                  </div>
+                <h2 className="profile-name">{selectedUser.firstName} {selectedUser.lastName}</h2>
+                <span className={`profile-role ${selectedUser.role}`}>{selectedUser.role}</span>
+              </div>
+
+              {/* User Info Fields */}
+              <div className="user-info-fields">
+                <div className="info-field">
+                  <label>Email</label>
+                  <span>{selectedUser.email}</span>
+                </div>
+                <div className="info-field">
+                  <label>Phone</label>
+                  <span>{selectedUser.phone}</span>
+                </div>
+                <div className="info-field">
+                  <label>Location</label>
+                  <span>{selectedUser.city}, {selectedUser.state}</span>
                 </div>
               </div>
 
-              <div className="scores-row">
-                <div className={`score-box ${getScoreClass(selectedUser.trustScore)}`}>
-                  <span className="score-value">{selectedUser.trustScore || 50}</span>
-                  <span className="score-label">Trust Score</span>
+              {/* Scores Grid */}
+              <div className="user-scores-grid">
+                <div className={`score-card ${getScoreClass(selectedUser.trustScore)}`}>
+                  <span className="score-number">{selectedUser.trustScore || 50}</span>
+                  <span className="score-name">Trust Score</span>
                 </div>
-                <div className={`score-box ${getScoreClass(selectedUser.repaymentScore)}`}>
-                  <span className="score-value">{selectedUser.repaymentScore || 50}</span>
-                  <span className="score-label">Repayment Score</span>
+                <div className={`score-card ${getScoreClass(selectedUser.repaymentScore)}`}>
+                  <span className="score-number">{selectedUser.repaymentScore || 50}</span>
+                  <span className="score-name">Repayment Score</span>
                 </div>
-                <div className="score-box rating">
-                  <span className="score-value">⭐ {selectedUser.averageRating ? Number(selectedUser.averageRating).toFixed(1) : '0.0'}</span>
-                  <span className="score-label">{selectedUser.totalRatings || 0} Ratings</span>
+                <div className="score-card rating">
+                  <span className="score-number">⭐ {selectedUser.averageRating ? Number(selectedUser.averageRating).toFixed(1) : '0.0'}</span>
+                  <span className="score-name">{selectedUser.totalRatings || 0} Ratings</span>
                 </div>
               </div>
 
               {selectedUser.governmentIdUrl && (
-                <div className="id-document">
-                  <h4>Government ID</h4>
+                <div className="gov-id-section">
+                  <label>Government ID</label>
                   <img src={`http://localhost:5000${selectedUser.governmentIdUrl}`} alt="Government ID" />
                 </div>
               )}
